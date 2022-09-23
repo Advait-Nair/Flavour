@@ -1,0 +1,2158 @@
+
+/* Hello there! Thank you for using FLOW Webtools. First, before you get started, we have to set up your color theme. Adjust colours, transitions, parameters, etc. here to your likings.
+
+Now, FLOW comes with 2 main styles: dark and light.
+
+Dark is set by default.
+
+To change the style, you have to either
+
+a - comment out the light/dark mode variables so that only the desired style's variables are being used.
+
+or
+
+b - duplicate this file and name one file dark, and the other light.
+In each file, comment out the light/dark mode variables so that only the desired style's variables are being used.
+
+
+
+Now, some things have to have their style manually set through classes applied to the element, such as vnav bars and topbars. This is for customisation purposes.
+
+Lastly, if you are using topbar, configure your highlight colour and thickness below.
+(hover style for links on the topbar)
+*/
+$navbar-thickness: 1.6px;
+$navbar-highlight-theme-color: #ffffffe0;
+$navbar-roundness: .4rem;
+// ! IF YOU HAVENT ALREADY, PLEASE READ THE ABOVE.
+
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&amp;display=swap");
+
+
+
+$caeruleus: #0781ff;
+$recte: #e93d3d;
+$lux-viridus: #acf06d;
+$fructus: #f7773c;
+$terrebat-flavum: #f7cb3c;
+$frigus-purpura: #5a1cac;
+
+$dark-caeruleus: #0067ce;
+$dark-recte: #ac1313;
+$dark-lux-viridus: #68c90d;
+$dark-terrebat-flavum: #e09915;
+$dark-frigus-purpura: #4d0ba3;
+$dark-fructus: #c54307;
+
+
+
+
+$nav-px-size: 45px;
+$topbar-height: 70px;
+
+
+$font-main: 'Montserrat', sans-serif;
+$font-regular: 500;
+$container-max-width: 1100px;
+
+
+// ? Two Modes - Comment one out.
+
+// ! Light Mode - Uncomment this for light mode, and comment out the dark mode.
+
+
+// $white: #eee;
+// $white-grey: #ddd;
+// $card-grey: #eee;
+// $font-main-color: #222;
+// $border-color: #ddd;
+// $mode: #fff;
+// $highlight: rgba($caeruleus, 0.6);
+// $dark: #222;
+// $light: #eee;
+
+// *::-webkit-scrollbar-track {
+//     background: $mode;
+// }
+// *::-webkit-scrollbar-thumb {
+//     background: rgba(51, 51, 51, 0.7);
+//     border-radius: 20px;
+//     height: 20px;
+//     border: 3px $mode solid;
+//     transition: 0.2s cubic-bezier(0.98, 0.01, 0.54, 1);
+// }
+// ! End of Light Mode
+
+
+// ! Dark Mode - Default style. This style overrides light mode, which is currently commented out. To enable light mode, comment this out.
+$white: #fff;
+$white-grey: #ddd;
+$card-grey: #444;
+$font-main-color: #fff;
+$border-color: #555;
+$dark: #333;
+$mode: #222;
+$light: #eee;
+$highlight: rgba(#2eafff, 0.6);
+
+
+*::-webkit-scrollbar-track {
+    background: $mode;
+}
+*::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    height: 20px;
+    border: 3px $mode solid;
+    transition: 0.2s cubic-bezier(0.98, 0.01, 0.54, 1);
+}
+// ! End of Dark Mode
+
+
+
+
+$highlight-full: 0px 0px 0px 3px $highlight;
+$highlight-full-pars: 0px 0px 0px 3px;
+$transition: all 300ms ease-in-out;
+$transition-font-size: font-size 10ms ease-in-out;
+$transition-textcolor: color 300ms ease-in-out;
+$transition-quick: all 200ms ease-in-out;
+$transition-quick-select: 200ms ease-in-out;
+
+$highlight-recte: $highlight-full-pars rgba($recte, 0.65);
+$highlight-lux-viridus: $highlight-full-pars rgba($lux-viridus, 0.6);
+$highlight-fructus: $highlight-full-pars rgba($fructus, 0.6);
+$highlight-terrebat-flavum: $highlight-full-pars rgba($terrebat-flavum, 0.6);
+$highlight-frigus-purpura: $highlight-full-pars rgba($frigus-purpura, 0.6);
+
+
+
+
+
+*::-webkit-scrollbar {
+    width: 13px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    transition: $transition;
+    background-color: #aaa;
+}
+
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    font-family: $font-main;
+    line-height: 1.2;
+    font-weight: $font-regular;
+    color: $font-main-color
+}
+
+body {
+    background: $mode;
+    overflow-x: hidden;
+}
+
+
+// ? Beginning of styling section
+
+// Colors
+
+.recte-text {
+    color: $recte !important;
+}
+.caeruleus-text {
+    color: $caeruleus !important;
+}
+.lux-viridus-text {
+    color: $lux-viridus !important;
+}
+.fructus-text {
+    color: $fructus !important;
+}
+.terrebat-flavum-text {
+    color: $terrebat-flavum !important;
+}
+.frigus-purpura-text {
+    color: $frigus-purpura !important;
+}
+
+.dark {
+    color: $white-grey;
+    background: $dark;
+}
+
+.light {
+    color: $white-grey - #444;
+    background: #eee;
+}
+
+.recte-bg {
+    background: $recte !important;
+}
+.caeruleus-bg {
+    background: $caeruleus !important;
+}
+.lux-viridus-bg {
+    background: $lux-viridus !important;
+}
+.fructus-bg {
+    background: $fructus !important;
+}
+.terrebat-flavum-bg {
+    background: $terrebat-flavum !important;
+}
+.frigus-purpura-bg {
+    background: $frigus-purpura !important;
+}
+
+.recte-child {
+    & > * {
+        color: $recte !important;
+    }
+}
+.caeruleus-child {
+    & > * {
+        color: $caeruleus !important;
+    }
+}
+.lux-viridus-child {
+    & > * {
+        color: $lux-viridus !important;
+    }
+}
+.fructus-child {
+    & > * {
+        color: $fructus !important;
+    }
+}
+.terrebat-flavum-child {
+    & > * {
+        color: $terrebat-flavum !important;
+    }
+}
+.frigus-purpura-child {
+    & > * {
+        color: $frigus-purpura
+    }
+}
+
+.recte-bg-child {
+    & > * {
+        background: $recte !important;
+    }
+}
+.caeruleus-bg-child {
+    & > * {
+        background: $caeruleus !important;
+    }
+}
+.lux-viridus-bg-child {
+    & > * {
+        background: $lux-viridus !important;
+    }
+}
+.fructus-bg-child {
+    & > * {
+        background: $fructus !important;
+    }
+}
+.terrebat-flavum-bg-child {
+    & > * {
+        background: $terrebat-flavum !important;
+    }
+}
+.frigus-purpura-bg-child {
+    & > * {
+        background: $frigus-purpura !important;
+    }
+}
+
+
+// Utilities
+
+.container {
+    margin: auto;
+    padding: 2rem;
+    max-width: $container-max-width;
+}
+.text-c {
+    text-align: center;
+}
+.text-l {
+    text-align: left;
+}
+.text-r {
+    text-align: right;
+}
+
+.round-1 {
+    border-radius: 6px;
+}
+.round-2 {
+    border-radius: 7px;
+}
+.round-3 {
+    border-radius: 9px;
+}
+.round-4 {
+    border-radius: 11px;
+}
+.round-5 {
+    border-radius: 14px;
+}
+.round-all {
+    border-radius: 50%;
+}
+.block {
+    display: block;
+}
+.full-width {
+    & > * {
+        width: 100%;
+    }
+    width: 100%;
+}
+.half-width {
+    & > * {
+        width: 50%;
+    }
+    width: 50%;
+}
+.third-width {
+    & > * {
+        width: 100%;
+    }
+    width: 33.333333333333333333333%;
+}
+.quarter-width {
+    & > * {
+        width: 100%;
+    }
+    width: 25%;
+}
+.half-height {
+    & > * {
+        width: 100%;
+    }
+    height: 50%;
+}
+.third-height {
+    & > * {
+        width: 100%;
+    }
+    height: 33.333333333333333333333%;
+}
+.quarter-height {
+    & > * {
+        width: 100%;
+    }
+    height: 25%;
+}
+.half-viewport-height {
+    & > * {
+        width: 100%;
+    }
+    height: 50vh;
+}
+.third-viewport-height {
+    & > * {
+        width: 100%;
+    }
+    height: 33.333333333333333333333vh;
+}
+.quarter-viewport-height {
+    & > * {
+        width: 100%;
+    }
+    height: 25vh;
+}
+.half-viewport-width {
+    & > * {
+        width: 100%;
+    }
+    width: 50vw;
+}
+.third-viewport-width {
+    & > * {
+        width: 100%;
+    }
+    width: 33.333333333333333333333vw;
+}
+.quarter-viewport-width {
+    & > * {
+        width: 25vw;
+    }
+    width: 25vw;
+}
+
+.b-full-width {
+    width: 97%;
+}
+.full-viewport-width {
+    width: 100vw;
+}
+.full-height {
+    height: 100%;
+}
+.full-viewport-height {
+    height: 100vw;
+}
+
+.inline {
+    display: inline !important;
+}
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+.flex-align-center {
+    align-items: center;
+}
+.flex-align-flex-start {
+    align-items: flex-start;
+}
+.flex-align-flex-end {
+    align-items: flex-end;
+}
+.flex-justify-center {
+    justify-content: center;
+}
+.flex-justify-flex-start {
+    justify-content: flex-start;
+}
+.flex-justify-flex-end {
+    justify-content: flex-end;
+}
+.grid {
+    display: grid;
+}
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+.grid-5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+.grid-10 {
+    grid-template-columns: repeat(10, 1fr);
+}
+.p-0 {
+    padding: 0rem !important;
+}
+.p-0-1 {
+    padding: 0.5rem !important;
+}
+.p-1 {
+    padding: 1rem !important;
+}
+.p-0-1 {
+    padding: 0.1rem !important;
+}
+.p-2 {
+    padding: 2rem !important;
+}
+.p-0-2 {
+    padding: 0.2rem !important;
+}
+.p-3 {
+    padding: 3rem !important;
+}
+.p-0-3 {
+    padding: 0.3rem !important;
+}
+.p-4 {
+    padding: 4rem !important;
+}
+.p-0-4 {
+    padding: 0.4rem !important;
+}
+.p-5 {
+    padding: 5rem !important;
+}
+
+
+.pl-0 {
+    padding-left: 0rem !important;
+}
+.pl-0-1 {
+    padding-left: 0.5rem !important;
+}
+.pl-1 {
+    padding-left: 1rem !important;
+}
+.pl-0-1 {
+    padding-left: 0.1rem !important;
+}
+.pl-2 {
+    padding-left: 2rem !important;
+}
+.pl-0-2 {
+    padding-left: 0.2rem !important;
+}
+.pl-3 {
+    padding-left: 3rem !important;
+}
+.pl-0-3 {
+    padding-left: 0.3rem !important;
+}
+.pl-4 {
+    padding-left: 4rem !important;
+}
+.pl-0-4 {
+    padding-left: 0.4rem !important;
+}
+.pl-5 {
+    padding-left: 5rem !important;
+}
+
+.pr-0 {
+    padding-right: 0rem !important;
+}
+.pr-0-1 {
+    padding-right: 0.5rem !important;
+}
+.pr-1 {
+    padding-right: 1rem !important;
+}
+.pr-0-1 {
+    padding-right: 0.1rem !important;
+}
+.pr-2 {
+    padding-right: 2rem !important;
+}
+.pr-0-2 {
+    padding-right: 0.2rem !important;
+}
+.pr-3 {
+    padding-right: 3rem !important;
+}
+.pr-0-3 {
+    padding-right: 0.3rem !important;
+}
+.pr-4 {
+    padding-right: 4rem !important;
+}
+.pr-0-4 {
+    padding-right: 0.4rem !important;
+}
+.pr-5 {
+    padding-right: 5rem !important;
+}
+
+
+.pt-0 {
+    padding-top: 0rem !important;
+}
+.pt-0-1 {
+    padding-top: 0.5rem !important;
+}
+.pt-1 {
+    padding-top: 1rem !important;
+}
+.pt-0-1 {
+    padding-top: 0.1rem !important;
+}
+.pt-2 {
+    padding-top: 2rem !important;
+}
+.pt-0-2 {
+    padding-top: 0.2rem !important;
+}
+.pt-3 {
+    padding-top: 3rem !important;
+}
+.pt-0-3 {
+    padding-top: 0.3rem !important;
+}
+.pt-4 {
+    padding-top: 4rem !important;
+}
+.pt-0-4 {
+    padding-top: 0.4rem !important;
+}
+.pt-5 {
+    padding-top: 5rem !important;
+}
+
+
+.pb-0 {
+    padding-bottom: 0rem !important;
+}
+.pb-0-1 {
+    padding-bottom: 0.5rem !important;
+}
+.pb-1 {
+    padding-bottom: 1rem !important;
+}
+.pb-0-1 {
+    padding-bottom: 0.1rem !important;
+}
+.pb-2 {
+    padding-bottom: 2rem !important;
+}
+.pb-0-2 {
+    padding-bottom: 0.2rem !important;
+}
+.pb-3 {
+    padding-bottom: 3rem !important;
+}
+.pb-0-3 {
+    padding-bottom: 0.3rem !important;
+}
+.pb-4 {
+    padding-bottom: 4rem !important;
+}
+.pb-0-4 {
+    padding-bottom: 0.4rem !important;
+}
+.pb-5 {
+    padding-bottom: 5rem !important;
+}
+
+
+
+.m-0 {
+    margin: 0rem !important;
+}
+.m-0-1 {
+    margin: 0.5rem !important;
+}
+.m-1 {
+    margin: 1rem !important;
+}
+.m-0-1 {
+    margin: 0.1rem !important;
+}
+.m-2 {
+    margin: 2rem !important;
+}
+.m-0-2 {
+    margin: 0.2rem !important;
+}
+.m-3 {
+    margin: 3rem !important;
+}
+.m-0-3 {
+    margin: 0.3rem !important;
+}
+.m-4 {
+    margin: 4rem !important;
+}
+.m-0-4 {
+    margin: 0.4rem !important;
+}
+.m-5 {
+    margin: 5rem !important;
+}
+
+// Zindexes
+.z1{
+    z-index: 1}
+
+.z2{
+    z-index: 2}
+
+.z3{
+    z-index: 3}
+
+.z4{
+    z-index: 4}
+
+.z5{
+    z-index: 5}
+
+.z6{
+    z-index: 6}
+
+.z7{
+    z-index: 7}
+
+.z8{
+    z-index: 8}
+
+.z9{
+    z-index: 9}
+
+.z10{
+    z-index: 10
+}
+.z11{
+    z-index: 11
+}
+.z12{
+    z-index: 12
+}
+.z13{
+    z-index: 13
+}
+.z14{
+    z-index: 14
+}
+.z15{
+    z-index: 15
+}
+.z16{
+    z-index: 16
+}
+.z17{
+    z-index: 17
+}
+.z18{
+    z-index: 18
+}
+.z19{
+    z-index: 19
+}
+.z20{
+    z-index: 20
+}
+.z21{
+    z-index: 21
+}
+.z22{
+    z-index: 22
+}
+.z23{
+    z-index: 23
+}
+.z24{
+    z-index: 24
+}
+.z25{
+    z-index: 25
+}
+.z26{
+    z-index: 26
+}
+.z27{
+    z-index: 27
+}
+.z28{
+    z-index: 28
+}
+.z29{
+    z-index: 29
+}
+.z30{
+    z-index: 30
+}
+.z31{
+    z-index: 31
+}
+.z32{
+    z-index: 32
+}
+.z33{
+    z-index: 33
+}
+.z34{
+    z-index: 34
+}
+.z35{
+    z-index: 35
+}
+.z36{
+    z-index: 36
+}
+.z37{
+    z-index: 37
+}
+.z38{
+    z-index: 38
+}
+.z39{
+    z-index: 39
+}
+.z40{
+    z-index: 40
+}
+.z41{
+    z-index: 41
+}
+.z42{
+    z-index: 42
+}
+.z43{
+    z-index: 43
+}
+.z44{
+    z-index: 44
+}
+.z45{
+    z-index: 45
+}
+.z46{
+    z-index: 46
+}
+.z47{
+    z-index: 47
+}
+.z48{
+    z-index: 48
+}
+.z49{
+    z-index: 49
+}
+.z50{
+    z-index: 50
+}
+.z51{
+    z-index: 51
+}
+.z52{
+    z-index: 52
+}
+.z53{
+    z-index: 53
+}
+.z54{
+    z-index: 54
+}
+.z55{
+    z-index: 55
+}
+.z56{
+    z-index: 56
+}
+.z57{
+    z-index: 57
+}
+.z58{
+    z-index: 58
+}
+.z59{
+    z-index: 59
+}
+.z60{
+    z-index: 60
+}
+.z61{
+    z-index: 61
+}
+.z62{
+    z-index: 62
+}
+.z63{
+    z-index: 63
+}
+.z64{
+    z-index: 64
+}
+.z65{
+    z-index: 65
+}
+.z66{
+    z-index: 66
+}
+.z67{
+    z-index: 67
+}
+.z68{
+    z-index: 68
+}
+.z69{
+    z-index: 69
+}
+.z70{
+    z-index: 70
+}
+.z71{
+    z-index: 71
+}
+.z72{
+    z-index: 72
+}
+.z73{
+    z-index: 73
+}
+.z74{
+    z-index: 74
+}
+.z75{
+    z-index: 75
+}
+.z76{
+    z-index: 76
+}
+.z77{
+    z-index: 77
+}
+.z78{
+    z-index: 78
+}
+.z79{
+    z-index: 79
+}
+.z80{
+    z-index: 80
+}
+.z81{
+    z-index: 81
+}
+.z82{
+    z-index: 82
+}
+.z83{
+    z-index: 83
+}
+.z84{
+    z-index: 84
+}
+.z85{
+    z-index: 85
+}
+.z86{
+    z-index: 86
+}
+.z87{
+    z-index: 87
+}
+.z88{
+    z-index: 88
+}
+.z89{
+    z-index: 89
+}
+.z90{
+    z-index: 90
+}
+.z91{
+    z-index: 91
+}
+.z92{
+    z-index: 92
+}
+.z93{
+    z-index: 93
+}
+.z94{
+    z-index: 94
+}
+.z95{
+    z-index: 95
+}
+.z96{
+    z-index: 96
+}
+.z97{
+    z-index: 97
+}
+.z98{
+    z-index: 98
+}
+.z99{
+    z-index: 99
+}
+.z100{
+    z-index: 100
+}
+
+.ml-0 {
+    margin-left: 0rem !important;
+}
+.ml-0-1 {
+    margin-left: 0.5rem !important;
+}
+.ml-1 {
+    margin-left: 1rem !important;
+}
+.ml-0-1 {
+    margin-left: 0.1rem !important;
+}
+.ml-2 {
+    margin-left: 2rem !important;
+}
+.ml-0-2 {
+    margin-left: 0.2rem !important;
+}
+.ml-3 {
+    margin-left: 3rem !important;
+}
+.ml-0-3 {
+    margin-left: 0.3rem !important;
+}
+.ml-4 {
+    margin-left: 4rem !important;
+}
+.ml-0-4 {
+    margin-left: 0.4rem !important;
+}
+.ml-5 {
+    margin-left: 5rem !important;
+}
+
+.mr-0 {
+    margin-right: 0rem !important;
+}
+.mr-0-1 {
+    margin-right: 0.5rem !important;
+}
+.mr-1 {
+    margin-right: 1rem !important;
+}
+.mr-0-1 {
+    margin-right: 0.1rem !important;
+}
+.mr-2 {
+    margin-right: 2rem !important;
+}
+.mr-0-2 {
+    margin-right: 0.2rem !important;
+}
+.mr-3 {
+    margin-right: 3rem !important;
+}
+.mr-0-3 {
+    margin-right: 0.3rem !important;
+}
+.mr-4 {
+    margin-right: 4rem !important;
+}
+.mr-0-4 {
+    margin-right: 0.4rem !important;
+}
+.mr-5 {
+    margin-right: 5rem !important;
+}
+
+
+.mt-0 {
+    margin-top: 0rem !important;
+}
+.mt-0-1 {
+    margin-top: 0.5rem !important;
+}
+.mt-1 {
+    margin-top: 1rem !important;
+}
+.mt-0-1 {
+    margin-top: 0.1rem !important;
+}
+.mt-2 {
+    margin-top: 2rem !important;
+}
+.mt-0-2 {
+    margin-top: 0.2rem !important;
+}
+.mt-3 {
+    margin-top: 3rem !important;
+}
+.mt-0-3 {
+    margin-top: 0.3rem !important;
+}
+.mt-4 {
+    margin-top: 4rem !important;
+}
+.mt-0-4 {
+    margin-top: 0.4rem !important;
+}
+.mt-5 {
+    margin-top: 5rem !important;
+}
+
+
+.mb-0 {
+    margin-bottom: 0rem !important;
+}
+.mb-0-1 {
+    margin-bottom: 0.5rem !important;
+}
+.mb-1 {
+    margin-bottom: 1rem !important;
+}
+.mb-0-1 {
+    margin-bottom: 0.1rem !important;
+}
+.mb-2 {
+    margin-bottom: 2rem !important;
+}
+.mb-0-2 {
+    margin-bottom: 0.2rem !important;
+}
+.mb-3 {
+    margin-bottom: 3rem !important;
+}
+.mb-0-3 {
+    margin-bottom: 0.3rem !important;
+}
+.mb-4 {
+    margin-bottom: 4rem !important;
+}
+.mb-0-4 {
+    margin-bottom: 0.4rem !important;
+}
+.mb-5 {
+    margin-bottom: 5rem !important;
+}
+
+// Custom Tags
+
+fl-p-0 {
+    margin-top: 0rem;
+    display: block;
+    width: 100%;
+}
+fl-p-0-1 {
+    margin-top: 0.5rem;
+    display: block;
+    width: 100%;
+}
+fl-p-1 {
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+}
+fl-p-0-1 {
+    margin-top: 0.1rem;
+    display: block;
+    width: 100%;
+}
+fl-p-2 {
+    margin-top: 2rem;
+    display: block;
+    width: 100%;
+}
+fl-p-0-2 {
+    margin-top: 0.2rem;
+    display: block;
+    width: 100%;
+}
+fl-p-3 {
+    margin-top: 3rem;
+    display: block;
+    width: 100%;
+}
+fl-p-0-3 {
+    margin-top: 0.3rem;
+    display: block;
+    width: 100%;
+}
+fl-p-4 {
+    margin-top: 4rem;
+    display: block;
+    width: 100%;
+}
+fl-p-0-4 {
+    margin-top: 0.4rem;
+    display: block;
+    width: 100%;
+}
+fl-p-5 {
+    margin-top: 5rem;
+    display: block;
+    width: 100%;
+}
+.font-1 {
+    font-size: 1rem;
+}
+.font-2 {
+    font-size: 2rem;
+}
+.font-3 {
+    font-size: 3rem;
+}
+.font-4 {
+    font-size: 4rem;
+}
+.font-5 {
+    font-size: 5rem;
+}
+.font-6 {
+    font-size: 6rem;
+}
+.font-7 {
+    font-size: 7rem;
+}
+.font-8 {
+    font-size: 8rem;
+}
+.font-9 {
+    font-size: 9rem;
+}
+.font-10 {
+    font-size: 10rem;
+}
+.font-11 {
+    font-size: 11rem;
+}
+.font-12 {
+    font-size: 12rem;
+}
+.font-13 {
+    font-size: 13rem;
+}
+.font-14 {
+    font-size: 14rem;
+}
+.font-15 {
+    font-size: 15rem;
+}
+.font-16 {
+    font-size: 16rem;
+}
+.font-17 {
+    font-size: 17rem;
+}
+.font-18 {
+    font-size: 18rem;
+}
+.font-19 {
+    font-size: 19rem;
+}
+.font-20 {
+    font-size: 20rem;
+}
+
+
+
+// Tag, Buttons, Inputs, Links, Images Styling
+button {
+    background: $caeruleus;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-caeruleus;
+        cursor: pointer;
+    }
+    &:focus {
+        box-shadow: $highlight-full;
+    }
+}
+button.recte {
+    background: $recte;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-recte;
+        cursor: pointer;
+    }
+    &:focus {
+        box-shadow: $highlight-recte;
+    }
+}
+button.lux-viridus {
+    background: $lux-viridus;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-lux-viridus;
+        cursor: pointer;
+    }
+    &:focus {
+        box-shadow: $highlight-lux-viridus;
+    }
+}
+button.frigus-purpura {
+    background: $frigus-purpura;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-frigus-purpura;
+        cursor: pointer;
+    }
+    &:focus {
+        box-shadow: $highlight-frigus-purpura;
+    }
+}
+button.fructus {
+    background: $fructus;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-fructus;
+        cursor: pointer;
+    }
+    &:focus {
+        box-shadow: $highlight-fructus;
+    }
+}
+button.terrebat-flavum {
+    background: $terrebat-flavum;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-terrebat-flavum;
+        cursor: pointer;
+    }
+    &:focus {
+        box-shadow: $highlight-terrebat-flavum;
+    }
+}
+.recte-collection {
+    button {
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $recte;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-recte;
+        }
+    }
+}
+.lux-viridus-collection {
+    button {
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $lux-viridus;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-lux-viridus;
+        }
+    }
+}
+.frigus-purpura-collection {
+    button {
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $frigus-purpura;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-frigus-purpura;
+        }
+    }
+}
+.fructus-collection {
+    button {
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $fructus;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-fructus;
+        }
+    }
+}
+.terrebat-flavum-collection {
+    button {
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $terrebat-flavum;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-terrebat-flavum;
+        }
+    }
+}
+.recte-collection-initial {
+    button {
+        background: $recte;
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $dark-recte;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-recte;
+        }
+    }
+}
+.lux-viridus-collection-initial {
+    button {
+        background: $lux-viridus;
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $dark-lux-viridus;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-lux-viridus;
+        }
+    }
+}
+.frigus-purpura-collection-initial {
+    button {
+        background: $frigus-purpura;
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $dark-frigus-purpura;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-frigus-purpura;
+        }
+    }
+}
+.fructus-collection-initial {
+    button {
+        background: $fructus;
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $dark-fructus;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-fructus;
+        }
+    }
+}
+.terrebat-flavum-collection-initial {
+    button {
+        background: $terrebat-flavum;
+        padding: 0.6rem;
+        color: $white;
+        transition: $transition;
+        &:hover {
+            background: $dark-terrebat-flavum;
+            cursor: pointer;
+        }
+        &:focus {
+            box-shadow: $highlight-terrebat-flavum;
+        }
+    }
+}
+
+.option {
+    button, & > * {
+        background: $card-grey;
+        color: $font-main-color;
+        border: solid 1.2px $border-color;
+        border-top: solid 1.2px transparent;
+        display: block;
+        transition: $transition-quick-select ;
+        position: relative;
+        z-index: 0;
+        &:hover {
+            background: $caeruleus;
+            color: $white-grey;
+        }
+        &:focus {
+            background: $dark-caeruleus + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    :first-child {
+        border-top: solid 1.2px $border-color;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+    :last-child {
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+    }
+}
+
+
+// Card
+.card {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    background: $card-grey;
+    color: $font-main-color;
+}
+
+
+
+
+.btn-option {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    & > * {
+        border-radius: 7px;
+        padding: 1rem;
+        border: 1px solid $border-color;
+        background: $card-grey;
+        font-size: 1.2rem;
+        margin: 1rem;
+        color: $font-main-color;
+        &:hover {
+            background: $caeruleus;
+            color: $white;
+        }
+        &:focus {
+            background: $dark-caeruleus + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    color: $font-main-color;
+}
+.btn-option .fructus {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    & > * {
+        border-radius: 7px;
+        padding: 1rem;
+        border: 1px solid $border-color;
+        background: $card-grey;
+        font-size: 1.2rem;
+        margin: 1rem;
+        color: $font-main-color;
+        &:hover {
+            background: $fructus;
+            color: $white;
+        }
+        &:focus {
+            background: $dark-fructus + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    color: $font-main-color;
+}
+.btn-option .lux-viridus {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    & > * {
+        border-radius: 7px;
+        padding: 1rem;
+        border: 1px solid $border-color;
+        background: $card-grey;
+        font-size: 1.2rem;
+        margin: 1rem;
+        color: $font-main-color;
+        &:hover {
+            background: $lux-viridus;
+            color: $white;
+        }
+        &:focus {
+            background: $dark-lux-viridus + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    color: $font-main-color;
+}
+.btn-option .recte {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    & > * {
+        border-radius: 7px;
+        padding: 1rem;
+        border: 1px solid $border-color;
+        background: $card-grey;
+        font-size: 1.2rem;
+        margin: 1rem;
+        color: $font-main-color;
+        &:hover {
+            background: $recte;
+            color: $white;
+        }
+        &:focus {
+            background: $dark-recte + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    color: $font-main-color;
+}
+.btn-option .terrebat-flavum {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    & > * {
+        border-radius: 7px;
+        padding: 1rem;
+        border: 1px solid $border-color;
+        background: $card-grey;
+        font-size: 1.2rem;
+        margin: 1rem;
+        color: $font-main-color;
+        &:hover {
+            background: $terrebat-flavum;
+            color: $white;
+        }
+        &:focus {
+            background: $dark-terrebat-flavum + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    color: $font-main-color;
+}
+.btn-option .frigus-purpura {
+    border-radius: 7px;
+    padding: 1rem;
+    border: 1px solid $border-color;
+    & > * {
+        border-radius: 7px;
+        padding: 1rem;
+        border: 1px solid $border-color;
+        background: $card-grey;
+        font-size: 1.2rem;
+        margin: 1rem;
+        color: $font-main-color;
+        &:hover {
+            background: $frigus-purpura;
+            color: $white;
+        }
+        &:focus {
+            background: $dark-frigus-purpura + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    color: $font-main-color;
+}
+
+
+
+
+
+.button {
+    background: $caeruleus;
+    padding: 0.6rem;
+    color: $white;
+    transition: $transition;
+    &:hover {
+        background: $dark-caeruleus;
+        cursor: pointer;
+        color: $white;
+    }
+    &:active {
+        box-shadow: $highlight-full;
+    }
+}
+a {
+    color: $caeruleus;
+    text-decoration: none;
+    transition: $transition;
+    &:hover {
+        color: $dark-caeruleus;
+    }
+}
+
+
+// Other
+
+.required {
+    &::after {
+        content: '*';
+        color: $recte;
+    }
+}
+.mark {
+    &::after {
+        content: '†';
+        color: $fructus;
+        padding-left: 0.1rem;
+    }
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.border {
+    border: 1px solid $border-color;
+}
+.highlight {
+    box-shadow: $highlight-full;
+}
+
+
+// Fonts
+
+.font-main {
+    font-family: $font-main;
+}
+.font-regular {
+    font-weight: $font-regular;
+}
+
+
+// Rotary Menu
+.rotary-menu {
+    height: 25rem;
+    width: 25rem;
+    transform: scale(0.7);
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+    position: absolute;
+    transition: $transition;
+    top: 0;
+    z-index: 10;
+    left: 0;
+    text-align: center;
+    box-shadow: inset 0 0 0 18rem $mode !important;
+    border-radius: 100%;
+    button {
+        box-shadow: none !important;
+    }
+    :first-child {
+        border-top-left-radius: 100%;
+    }
+    :nth-child(2) {
+        border-top-right-radius: 100%;
+    }
+    :nth-child(3) {
+        border-bottom-left-radius: 100%;
+        border-top-right-radius: -100px;
+    }
+    :last-child {
+        border-bottom-right-radius: 100%;
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        transform: scale(1.3);
+        height: 10rem;
+        border-radius: 100%;
+        width: 10rem;
+        top: 30%;
+        left: 30%;
+        background: $mode;
+    }
+    i {
+        text-align: left;
+        color: #fff;
+        font-size: 3.2rem;
+        margin: 0.2rem;
+    }
+}
+
+// Correct box
+.correct {
+    background: $lux-viridus;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    font-size: 2rem;
+    :first-child {
+        display: block;
+        font-size: 4rem;
+    }
+    & > * {
+        color: $lux-viridus + rgb(124, 236, 110) !important;
+    }
+}
+.wrong {
+    background: $recte + #444;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    font-size: 2rem;
+    :first-child {
+        display: block;
+        font-size: 4rem;
+    }
+    & > * {
+        color: $recte + #aaa !important;
+    }
+}
+
+
+// Vertical Navigation (VNAV)
+
+.vnav-content {
+    display: flex;
+    .container {
+        width: 80%;
+    }
+    .vnav-master {
+        padding: 0.3rem;
+        z-index: 9;
+        height: 100vh;
+        position: fixed;
+        transition: $transition;
+    }
+    .vnav {
+        transition: $transition;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        position: relative;
+        &:hover {
+            transition: $transition;
+            div {
+                div {
+                    transition: $transition;
+                    &:hover {
+                        i {
+                            transition: $transition;
+                            color: $white;
+                            z-index: 10;
+                        }
+                        li {
+                            transition: $transition;
+                            color: $white-grey;
+                        }
+                    }
+                    li {
+                        transition: $transition;
+                        display: initial;
+                        margin: 0.6rem;
+                        transform: translateX(0);
+                        font-size: initial;
+                        color: $white-grey - #444;
+                        padding-left: 0;
+                    }
+                }
+                .logo {
+                    transition: $transition;
+                    justify-content: center;
+                }
+            }
+        }
+        .main, .end {
+            .logo {
+                border-radius: 7px;
+                height: $nav-px-size + 21;
+                width: $nav-px-size + 21;
+                padding: 0.3rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: auto;
+                transition: $transition;
+            }
+            div {
+                transition: $transition;
+                display: flex;
+                width: 100%;
+                justify-content: flex-start;
+                align-items: center;
+                i {
+                    transition: $transition;
+                    height: $nav-px-size;
+                    width: $nav-px-size;
+                }
+            }
+            div {
+                a {
+                    transition: $transition;
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-start;
+                    align-items: center;
+                    i {
+                        transition: $transition;
+                        height: $nav-px-size;
+                        width: $nav-px-size;
+                    }
+                }
+            }
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            
+            li {
+                list-style: none;
+                margin: 0.0rem;
+                border-radius: 7px;
+                cursor: pointer;
+                display: initial;
+                transform: translateX(-100rem);
+                
+                font-size: 0;
+                color: transparent;
+                transition: $transition;
+                position: relative;
+                right: 0;
+                
+                
+
+            }
+            i {
+                transition: $transition;
+                margin: 0.6rem;
+                font-size: 2.8rem;
+                cursor: pointer;
+                border-radius: 7px;
+            }
+        }
+    }
+    .vnav.no-expand {
+        transition: $transition;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        position: relative;
+        &:hover {
+            transition: $transition;
+            div {
+                div {
+                    transition: $transition;
+                    &:hover {
+                        i {
+                            transition: $transition;
+                            color: $white;
+                            z-index: 10;
+                        }
+                        li {
+                            transition: $transition;
+                            color: $white-grey;
+                        }
+                    }
+                    li {
+                        transition: $transition;
+                        display: initial;
+                        margin: 0.6rem;
+                        transform: translateX(0);
+                        font-size: initial;
+                        color: $white-grey - #666;
+                        padding-left: 0;
+                    }
+                }
+                .logo {
+                    transition: $transition;
+                    justify-content: center;
+                }
+            }
+        }
+        .main, .end {
+            .logo {
+                border-radius: 7px;
+                height: $nav-px-size + 21;
+                width: $nav-px-size + 21;
+                padding: 0.3rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: auto;
+                transition: $transition;
+            }
+            div {
+                transition: $transition;
+                display: flex;
+                width: 100%;
+                justify-content: flex-start;
+                align-items: center;
+                i {
+                    transition: $transition;
+                    height: $nav-px-size;
+                    width: $nav-px-size;
+                }
+            }
+            div {
+                a {
+                    transition: $transition;
+                    display: flex;
+                    width: 100%;
+                    justify-content: flex-start;
+                    align-items: center;
+                    i {
+                        transition: $transition;
+                        height: $nav-px-size;
+                        width: $nav-px-size;
+                    }
+                }
+            }
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            
+            li {
+                list-style: none;
+                margin: 0.0rem;
+                border-radius: 7px;
+                cursor: pointer;
+                display: initial;
+                transform: translateX(-100rem);
+                
+                font-size: 0;
+                color: transparent;
+                transition: $transition;
+                position: relative;
+                right: 0;
+                
+                
+
+            }
+            i {
+                transition: $transition;
+                margin: 0.6rem;
+                font-size: 2.8rem;
+                cursor: pointer;
+                border-radius: 7px;
+            }
+        }
+    }
+    .dark {
+        .logo {
+            color: $white-grey - #444;
+            &:hover {
+                color: $white;
+                cursor: pointer;
+                background: $white-grey - #999;
+            }
+        }
+        li {
+            color: $white-grey - #444;
+        }
+        i {
+            color: $white-grey - #444;
+            &:hover {
+                background: $white-grey - #999;
+            }
+        }
+    }
+    .light {
+        .logo {
+            color: $white-grey - #666;
+            &:hover {
+                color: $white-grey;
+                cursor: pointer;
+                background: $white-grey - #999;
+            }
+        }
+        li {
+            color: $white-grey - #666;
+        }
+        i {
+            color: $white-grey - #666;
+            &:hover {
+                background: $white-grey - #666;
+            }
+        }
+        .vnav:hover {
+            div:hover {
+                li {
+                    color: $white-grey - #888;
+                }
+                i {
+                    color: $white-grey - #888;
+                    &:hover {
+                        background: $white-grey - #666;
+                        color: $white-grey;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// Top Navigation Bar (topbar)
+
+.topbar {
+    height: $topbar-height;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 11;
+    .left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        li {
+            padding: 0.2rem;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0.2rem;
+            transition: $transition;
+            border: solid 3px transparent;
+            border-radius: $navbar-roundness;
+            &:hover {
+                background: $dark - #111;
+                border-bottom: solid $navbar-thickness $navbar-highlight-theme-color;
+            }
+        }
+    }
+    .left, .right {
+        height: 100%;
+        padding: 0.4rem;
+        li, h1 ,h2, h3, h4, h5, img, button, a, p {
+            cursor: pointer;
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+    &.dark {
+        background: $dark;
+        .left, .right {
+            li {
+                color: $white-grey;
+                list-style: none;
+            }
+            * {
+                color: $white-grey;
+            }
+        }
+    }
+    &.light {
+        background: $light;
+        .left, .right {
+            li {
+                color: $dark;
+                list-style: none;
+                &:hover {
+                    background: $white-grey - #222;
+                    color: $dark + #222;
+                }
+            }
+            * {
+                color: $dark;
+            }
+        }
+        li, h1 ,h2, h3, h4, h5, img, button, a, p {
+            cursor: pointer;
+            &:hover {
+                color: $dark + #222;
+            }
+        }
+    }
+}

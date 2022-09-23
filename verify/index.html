@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="flow.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Player - Coordinata</title>
+    <script>
+        let auth = null;
+    </script>
+    <script type="module">
+        const closing = true;
+        const textIsContent = true;
+
+    window.settings = () => {
+        advancedModal('User Settings', [
+            {tag:'h3', text:'Edit Name', class:'bold block card text-l no-border p-0 full-width', closing, textIsContent},
+            {tag:'input', text:'First Name', class:'m-1'},
+            {tag:'input', text:'Last Name', class:'m-1'},
+        ], data => {
+            console.log(data);
+        });
+    }
+
+    const d_console = {
+        log: console.log,
+        warn: console.warn,
+        info: console.info,
+        error: console.error,
+    }
+    console.enable = code => {
+        localStorage.setItem('DEBUG',code)
+    }
+    console.isDebug = () => {
+        let isDebug = false;
+        if (localStorage.getItem('DEBUG') && localStorage.getItem('DEBUG') === '7422'){
+            isDebug = true;
+        }
+
+        
+        return isDebug;
+    }
+
+    // https://javascript.plainenglish.io/lets-extend-console-log-8641bda035c3
+    console.log = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.log
+        if(console.isDebug(args)){
+        d_console.log.apply(console, args);
+        }
+    }
+    console.info = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.info
+        if(console.isDebug(args)){
+        d_console.info.apply(console, args);
+        }
+    }
+    console.warn = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.warn
+        if(console.isDebug(args)){
+        d_console.warn.apply(console, args);
+        }
+    }
+    console.error = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.error
+        if(console.isDebug(args)){
+        d_console.error.apply(console, args);
+        }
+    }
+
+    </script>
+</head>
+<body>
+    <nav class="topbar">
+        <div class="p-half version-info">
+            <span class="greyed-text glass round-4 p-half">v0.1</span>
+        </div>
+        <div class="p-1 error-container glass round-4 flex flex-column">
+            <span class="greyed-text text-r font-inter s-caption err-caption">
+                ACCESSIBILITY
+            </span>
+            <span class="error-pop py-quarter">Use <span class="card p-key">Tab</span> to navigate</span>
+        </div>
+    </nav>
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_404">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <div class="main">
+
+                <h1>404</h1>
+                <h3>Not Found.</h3>
+                <h4>You may have been directed to a page that <strong>does not exist.</strong></h4>
+                <button class="dark round-4 p-1 third-width mt-1" onclick="history.back();">Go Back</button>
+            </div>
+        </div>
+    </div>
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_unknown_motive">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <div class="main">
+
+                <h1>Hello.</h1>
+                <h3>You seem lost.</h3>
+                <h4>Have you come to verify your email as a part of Coordinata ID Handling? In order to do so, you need a special link for that.</h4>
+                <button class="dark round-4 p-1 third-width mt-1" onclick="history.back();">Go Back</button>
+            </div>
+        </div>
+    </div>
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_blank">
+    </div>
+
+
+    <!-- <div class="footer full-width p-1 text-c">
+        <img class="img-small round-4" src="assets/coordinata.png" alt="cd">
+        <h1>Coordinata</h1>
+        <h4 class="greyed-text">Adva Software Group</h4>
+    </div> -->
+
+    <script type="module" src="firebase.js"></script>
+    <script src="singlePageApp.js"></script>
+    <script type="module" src="main.js"></script>
+    <!-- <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            document.querySelector(".sign-in-form").submit();
+        }
+    </script> -->
+</body>
+</html>

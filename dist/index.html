@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/flow.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Player - Coordinata</title>
+    <script>
+        let auth = null;
+    </script>
+    <script type="module">
+        const closing = true;
+        const textIsContent = true;
+    import { signOutUser } from '/dist/js/firebase.js';
+    import { msg, modal, advancedModal } from '/dist/js/main.js';
+    window.logOut = function () {
+        localStorage.clear();
+        signOutUser(err => {
+            console.error(err);
+        }, () => {
+            msg('Logged out successfully!', 'success');
+        });
+    }
+    window.settings = () => {
+        advancedModal('User Settings', [
+            {tag:'h3', text:'Edit Name', class:'bold block card text-l no-border p-0 full-width', closing, textIsContent},
+            {tag:'input', text:'First Name', class:'m-1'},
+            {tag:'input', text:'Last Name', class:'m-1'},
+        ], data => {
+            console.log(data);
+        });
+    }
+
+    const d_console = {
+        log: console.log,
+        warn: console.warn,
+        info: console.info,
+        error: console.error,
+    }
+    console.enable = code => {
+        localStorage.setItem('DEBUG',code)
+    }
+    console.isDebug = () => {
+        let isDebug = false;
+        if (localStorage.getItem('DEBUG') && localStorage.getItem('DEBUG') === '7422'){
+            isDebug = true;
+        }
+
+        
+        return isDebug;
+    }
+
+    // https://javascript.plainenglish.io/lets-extend-console-log-8641bda035c3
+    console.log = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.log
+        if(console.isDebug(args)){
+        d_console.log.apply(console, args);
+        }
+    }
+    console.info = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.info
+        if(console.isDebug(args)){
+        d_console.info.apply(console, args);
+        }
+    }
+    console.warn = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.warn
+        if(console.isDebug(args)){
+        d_console.warn.apply(console, args);
+        }
+    }
+    console.error = function(x) {
+
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.error
+        if(console.isDebug(args)){
+        d_console.error.apply(console, args);
+        }
+    }
+
+    </script>
+</head>
+<body>
+    <nav class="topbar">
+        <div class="p-half version-info">
+            <span class="greyed-text glass round-4 p-half">v0.1</span>
+        </div>
+        <div class="p-1 error-container glass round-4 flex flex-column">
+            <span class="greyed-text text-r font-inter s-caption err-caption">
+                ACCESSIBILITY
+            </span>
+            <span class="error-pop py-quarter">Use <span class="card p-key">Tab</span> to navigate</span>
+        </div>
+    </nav>
+    <div id="page_join" class="container p-0 page">
+        <form class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column joinEvent">
+            <div class="mt-2 flex flex-align-center flex-justify-center flex-column">
+                <h4 class="text-l block half-width">Access Code</h4>
+        
+                <input placeholder="000ABC" class="seccode p-1 mt-1 mb-1 no-outline dark round-3 font-3 text-c half-width" type="text-center">
+            </div>
+            <button type="submit" class="round-4 p-1 m-1 third-width">Join Event!</button>
+            <div class="greyed-text p-1 pt-4 half-width text-c">
+                Access codes are special 6 character codes that are given out by event organisers so that you can join their events. To get an access code, simply ask the event organiser through some mean of communication such as a website. In short, these 6 character codes are used to access an event.
+            </div>
+        </form>
+    </div>
+    <!-- Signing up or in? -->
+    <div id="page_start" class="container p-0 page">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height">
+            <button onclick="redir('page_creation')" class="to-sign-up p-1 m-1 dark round-4 square text-c">
+                I am new
+            </button>
+            <button onclick="redir('page_signin')" class="to-sign-in p-1 third-height m-1 dark round-4 square text-c">
+                I am signing in
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Sign in page -->
+    <div id="page_signin" class="container page">
+        <div class="flex flex-align-center flex-justify-center">
+            <h1 class="text-c">Welcome</h1>
+        </div>
+        <div class="form-container flex flex-align-center flex-justify-center flex-column">
+            <form class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column sign-in-form">
+                <input placeholder="Email..." class="email p-1 m-1 no-outline dark round-3 input-field" type="email">
+                <input placeholder="Password" class="password p-1 m-1 no-outline dark round-3 input-field" type="password">
+                <button 
+                data-sitekey="6LcvaQwiAAAAADM-baURJSIR2Or0k64v9wisGcgl" 
+                data-callback='onSubmit' 
+                data-action='submit' type="submit" class="g-recaptcha btn m-1 input-field p-1 round-4">Continue</button>
+                <h6 class="text-c">Just as a reminder, check out the <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h6>
+            </form>
+            <button onclick="redir('page_start')" class="text-c pointer p-1 m-1 dark round-4 third-width">Back</button>
+        </div>
+    </div>
+
+
+    <!-- creation/signup page -->
+    <div id="page_creation" class="container page">
+        <div class="flex flex-align-center flex-justify-center">
+            <h1 class="text-c">Hello</h1>
+        </div>
+        <div class="form-container flex flex-align-center flex-justify-center flex-column">
+            <form class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column sign-up-form">
+                <input placeholder="First name..." class="fname p-1 m-1 no-outline dark round-3 input-field">
+
+                <input placeholder="Last name..." class="lname p-1 m-1 no-outline dark round-3 input-field">
+                <div class="name-display greyed-text text-c"><br></div>
+                <input placeholder="Email..." class="email p-1 m-1 no-outline dark round-3 input-field" type="email">
+                <input placeholder="Password" class="password p-1 m-1 no-outline dark round-3 input-field" type="password">
+                
+                <button 
+                data-sitekey="6LcvaQwiAAAAADM-baURJSIR2Or0k64v9wisGcgl" 
+                data-callback='onSubmit' 
+                data-action='submit' type="submit" class="g-recaptcha btn m-1 input-field p-1 round-4">Continue</button>
+                <h6 class="text-c">By creating a player ID, you consent to the following <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h6>
+
+
+            </form>
+            <button onclick="redir('page_start')" class="text-c pointer p-1 m-1 dark round-4 third-width">Back</button>
+        </div>
+    </div>
+
+
+    <!-- Dashboard -->
+    <div id="page_dashboard" class="container page">
+        <h1 class="text-c p-1 m-1">Dashboard</h1>
+        <h4 class="text-c greyed-text" >Logged in as <span class="dash-fname">___</span> <span class="dash-lname">_____</span></h4>
+        <h5 class="dash-email greyed-text text-c"></h5>
+        <div class="grid-2 grid event-on disabled">
+            <button class="p-1 dark round-4 m-1 inline">QR Code</button>
+            <button class="p-1 dark round-4 m-1 inline">Your Status</button>
+            <button class="p-1 dark round-4 m-1 inline">Team</button>
+            <button class="p-1 dark round-4 m-1 inline">Event Information</button>
+        </div>
+        <div class="event-off p-1 round-4">
+            <button class="p-1 dark round-4 full-width" onclick="redir('page_join')">Register to an event</button>
+        </div>
+        <div class="flex-align-center flex flex-justify-center">
+            <button onclick="window.logOut();" class="p-1 dark round-4 m-1 inline recte">Log Out of ID</button>
+            <button onclick="window.settings();" class="p-1 dark round-4 m-1 inline dark">Settings</button>
+        </div>
+        
+    </div>
+    
+
+    <div id="page_tandc" class="page container font-inter">
+        <div class="btn-wrapper flex flex-align-center flex-justify-center">
+            <button class="dark p-1 round-2 z100" onclick="redir('page_creation');">Return</button>
+        </div>
+        <h1 class="p-1 bold">Terms and Conditions</h1>
+        <section class="p-1 dark round-4">
+            <h1 class="bold">Our Contact Information</h1>
+            <p class="p-1">Email us: <a href="mailto:main.adva@gmail.com">main.adva@gmail.com</a></p>
+
+        </section>
+        <section class="p-1 dark round-4 mt-1 mb-1">
+            <h3 class="bold">Rights</h3>
+            <p class="p-1">
+                At any time your data can be erased from our database - <br><br>
+                YOU HAVE THE RIGHT TO WITHDRAW YOUR DATA.
+                <br><br>
+                You data can only be seen by your coordinator for organisation purposes, yourself and us whenever we view our servers.
+                <br><br>
+                AT NO POINT WILL THIS 'APPLICATION' SELL OR RELEASE ANY DATA FROM OUR DATABASE.
+
+                <br><br>
+                YOUR DATA BELONGS TO YOU, AND YOU HAVE THE RIGHT TO DO ANYTHING WITH YOUR DATA. IF YOU HAVE ANY CONCERNS INVOLVING THE SAFETY OF YOUR DATA, <a href="mailto:main.adva@gmail.com">CONTACT US.</a>
+            </p>
+        </section>
+        <section class="p-1 dark round-4 mt-1 mb-1">
+            <h3 class="bold">How we use your data</h3>
+            <p class="p-1">
+                We use the following information provided by you<br>
+                <ul class="p-2 card no-border round-4">
+                    <li>First name</li>
+                    <li>Last name</li>
+                    <li>Email Address or Phone number</li>
+                </ul>
+            <br><br>
+            Your first name & last name is used to identify yourself in an event. Your coordinator can more easily recognise you and we can greet you by your name.
+            <br><br>
+            You email address or phone number is used as one of the unique identifiers of your identity. They are used for signin purposes and CAN BE SEEN BY YOUR COORDINATOR AND US.
+            <br><br>Your coordinator uses this to verify and contact you if needed.
+            <br>
+            BY SIGNING UP TO COORDINATA YOU AGREE THAT YOUR CONTACT DETAILS CAN BE GIVEN TO YOUR COORDINATOR.
+            <br><br>
+            IN THE EVENT YOUR CONTACT INFORMATION IS ABUSED, PLEASE CONTACT US AND WE WILL DELETE YOUR ACCOUNT AND SANCTION THE INVOLVED ENTITIES.
+            </br></br>
+            
+            </p>
+        </section>
+    </div>
+
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_signed_out">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <h1>Signed Out.</h1>
+            <h3>Auto-Reloading Shortly...</h3>
+        </div>
+    </div>
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_404">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <div class="main">
+
+                <h1>404</h1>
+                <h3>Not Found.</h3>
+                <h4>You may have been directed to a page that <strong>does not exist.</strong></h4>
+                <button class="dark round-4 p-1 third-width mt-1" onclick="history.back();">Go Back</button>
+            </div>
+        </div>
+    </div>
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_loading">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <div class="main">
+
+                <h1>Loading</h1>
+                <h3>We're getting things up and running for you</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="footer full-width p-1 text-c">
+        <img class="img-small round-4" src="assets/coordinata.png" alt="cd">
+        <h1>Coordinata</h1>
+        <h4 class="greyed-text">Adva Software Group</h4>
+    </div> -->
+
+    <script type="module" src="js/firebase.js"></script>
+    <script type="" src="js/singlePageApp.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <!-- <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            document.querySelector(".sign-in-form").submit();
+        }
+    </script> -->
+</body>
+</html>

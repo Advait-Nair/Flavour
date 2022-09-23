@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.pointer {
+    cursor: pointer;
+}
+
+.max-full-viewport-height {
+    max-height: 100vh;
+    min-height: 100vh;
+}
+
+.p-half {
+    padding: 0.5rem;
+}
+.px-half {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+.py-half {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.p-quarter {
+    padding: 0.25rem;
+}
+.px-quarter {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+.py-quarter {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.p-key {
+    padding: 0.2rem 0.4rem;
+}
+.s-caption {
+    font-size: 0.8rem;
+}
+
+.no-overflow {
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+}
+.font-inter, .font-inter * {
+    font-family: 'Inter', sans-serif !important;
+}
+.bold {
+    font-weight: bold !important;
+}
+.italic {
+    font-style: italic !important;
+}
+
+.no-outline {
+    outline: none;
+}
+
+.greyed-text {
+    color: #9e9e9e;
+}
+
+.img-small {
+    width: 13%;
+    height: auto;
+}
+
+.error-mode {
+    display: inline;
+    background-color: #ffaaaa;
+    border: 1px solid rgb(255, 128, 128);
+    border-radius: 0.4rem;
+    color: rgb(87, 47, 47);
+    padding: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+.success-mode {
+    display: inline;
+    background-color: #aeffaa;
+    border: 1px solid rgb(128, 255, 132);
+    border-radius: 0.4rem;
+    color: rgb(47, 87, 63);
+    padding: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.input-field {
+    width: 50%;
+}
+.square {
+    width: 100%;
+    height: 10rem;
+}
+.glass {
+    backdrop-filter: blur(13px);
+    background: #222222;
+}
+.modal-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #00000096;
+    .modal {
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        width: 80%;
+        height: 80%;
+    }
+}
+
+.z--1 {
+    z-index: -1;
+}
+.z-0-i {
+    z-index: 0 !important;
+}
+.flex-important {
+    display: flex !important;
+}
+@media screen and (max-width: 767px) {
+    body {
+        font-size: 13px;
+    }
+}
+@media screen and (max-width: 543px) {
+    body {
+        font-size: 12px;
+    }
+    .seccode {
+        font-size: 1.72rem;
+    }
+    .input-field {
+        width: 90%;
+    }
+    .error-container {
+        display: none;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    outline: none;
+}
+
+.disabled {
+    content: '';
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    border-radius: 1rem;
+    // z-index: 4;
+    button {
+        cursor: default;
+        background: #222;
+        color: #333;
+        & {
+            box-shadow: none;
+        }
+    }
+}
+
+input.disabled {
+    content: '';
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    border-radius: 1rem;
+}
+.no-border {
+    border: none;
+}
+.modal {
+    z-index: 100;
+}
