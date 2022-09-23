@@ -266,6 +266,7 @@ function withCredentials (user)
     
 
     document.querySelector('.joinEvent').addEventListener('submit', e => {
+        e.preventDefault();
 		const code = document.querySelector('.seccode');
 		if (!code.value) return;
 		checkIfCodeIsValid(code.value, eventData => {
