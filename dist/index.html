@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/flow.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="manifest" href="/dist/manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Meta -->
@@ -21,13 +21,13 @@
     <meta name="og:type" content="service">
     <meta name="og:title" content="Adva Coordinata">
     <meta name="og:description" content="Make event organising a breeze!">
-    <meta name="og:image" content="/dist/assets/coordinata.png">
+    <meta name="og:image" content="./assets/coordinata.png">
     <meta name="og:url" content="https://coordinata.netlify.app">
     <meta name="og:site_name" content="Coordinata">
     <!-- Twitter -->
     <meta name="twitter:title" content="Adva Coordinata">
     <meta name="twitter:description" content="Make event organising a breeze!">
-    <meta name="twitter:image" content="/dist/assets/coordinata.png">
+    <meta name="twitter:image" content="./assets/coordinata.png">
 
     <title>Player - Coordinata</title>
     <script>
@@ -36,8 +36,8 @@
     <script type="module">
         const closing = true;
         const textIsContent = true;
-    import { signOutUser } from '/dist/js/firebase.js';
-    import { msg, modal, advancedModal } from '/dist/js/main.js';
+    import { signOutUser } from './js/firebase.js';
+    import { msg, modal, advancedModal } from './js/main.js';
     window.logOut = function () {
         localStorage.clear();
         signOutUser(err => {
