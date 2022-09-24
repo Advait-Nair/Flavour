@@ -20,7 +20,7 @@
         {
             "name":"Join Event",
             "url":"/#page_join",
-            "description":"Join an event using an access code."
+            "description":"Join an event using a code."
         }
     ],
     "icons": [
