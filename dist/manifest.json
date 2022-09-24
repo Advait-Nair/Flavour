@@ -1,0 +1,36 @@
+{
+	"background_color": "#ffffff",
+	"description": "Check in to your event today with Coordinata! Organise your very own event with Coordinata today!",
+	"dir": "ltr",
+	"display": "standalone",
+	"name": "Coordinata",
+	"orientation": "portrait",
+	"scope": "/",
+	"short_name": "Coordinata",
+	"start_url": "/",
+	"theme_color": "#0781ff",
+	"categories": ["Services", "Events", "Event Organisation", "Software", "Utilities"],
+	"screenshots": [""],
+    "shortcuts": [
+        {
+            "name":"Dashboard",
+            "url":"/#page_dashboard",
+            "description":"Go to your dashboard"
+        },
+        {
+            "name":"Join Event",
+            "url":"/#page_join",
+            "description":"Join an event using an access code."
+        }
+    ],
+    "icons": [
+        {
+        "src": "/assets/coordinata.png",
+        "type": "image/png"
+        },
+        {
+        "src": "/favicon.ico",
+        "type": "image/x-icon"
+        }
+}
+
