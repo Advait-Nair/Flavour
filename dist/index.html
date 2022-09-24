@@ -9,6 +9,15 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
+
+
+    <script type="module">
+    import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+
+    const el = document.createElement('pwa-update');
+    document.body.appendChild(el);
+    </script>
+
     <!-- Meta -->
     
     <!-- Basic -->
@@ -28,7 +37,7 @@
     <meta name="twitter:title" content="Adva Coordinata">
     <meta name="twitter:description" content="Make event organising a breeze!">
     <meta name="twitter:image" content="./assets/coordinata.png">
-    
+
 
     <title>Player - Coordinata</title>
     <script>
@@ -125,6 +134,7 @@
         d_console.error.apply(console, args);
         }
     }
+
 
     </script>
 </head>
@@ -309,7 +319,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- <div class="footer full-width p-1 text-c">
         <img class="img-small round-4" src="assets/coordinata.png" alt="cd">
         <h1>Coordinata</h1>
