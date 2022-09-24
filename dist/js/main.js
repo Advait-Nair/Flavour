@@ -35,7 +35,9 @@ function SigninInit(){
             
             // Is existing user?
             signInUser(details.email, details.password, err => {
-                msg(err, 'error');
+                if(err.includes('auth/wrong-password')){
+                    msg('Wrong Password!', 'error');
+                }
             }, () => {
                 msg('Log in request successful!', 'success');
                 localStorage.setItem('user', JSON.stringify(details))

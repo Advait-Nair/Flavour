@@ -125,6 +125,22 @@
   height: 80%;
 }
 
+.generic-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.generic-wrapper .generic-item {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+}
+
 .z--1 {
   z-index: -1;
 }

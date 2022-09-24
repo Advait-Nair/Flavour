@@ -121,7 +121,10 @@ function handleResetPassword(auth, actionCode, continueUrl, lang) {
                             // Password reset has been confirmed and new password updated.
                             // TODO: Display a link back to the app, or sign-in the user directly
                             // if the page belongs to the same domain as the app:
-                            location.href = 'https://coordinata.netlify.app';
+                            !continueUrl ?
+                            location.href = 'https://coordinata.netlify.app':
+                            location.href = continueUrl;
+
                             // TODO: If a continue URL is available, display a button which on
                             // click redirects the user back to the app via continueUrl with
                             // additional state determined from that URL's parameters.
@@ -129,6 +132,16 @@ function handleResetPassword(auth, actionCode, continueUrl, lang) {
                         .catch(error => {
                             // Error occurred during confirmation. The code might have expired or the
                             // password is too weak.
+                            console.log(error);
+                            advancedModal('Woah. Whoops.', [
+								{
+									tag: 'h3',
+									text: 'Either your code expired, or your password was too bad.',
+									class: 'bold block card text-l no-border p-0 full-width greyed-text',
+									closing,
+									textIsContent,
+								},
+							]);
                         });
 				}
 			);
@@ -137,5 +150,12 @@ function handleResetPassword(auth, actionCode, continueUrl, lang) {
 		.catch(error => {
 			// Invalid or expired action code. Ask user to try to reset the password
 			// again.
+            redir('page_swr');
+			msg(error, 'error');
+            // setTimeout(() => {
+            //     location.reload();
+            // }, 3000)
 		});
 }
+
+'http://127.0.0.1:5500/verify/index.html?mode=resetPassword&oobCode=786Gbk&continueUrl=127.0.0.1&lang=en#page_process';
