@@ -1,4 +1,4 @@
-import { createUser, signInUser, getUid, getFunnel, checkIfCodeIsValid, addToFunnel } from './firebase.js';
+import { createUser, signInUser, getUid, getFunnel, checkIfCodeIsValid, addToFunnel, translateFirebaseError } from './firebase.js';
 
 const errpopPrevContent = document.querySelector('.error-pop').innerHTML;
 const errCaptionPrevContent = document.querySelector('.err-caption').innerHTML;
@@ -35,10 +35,7 @@ function SigninInit(){
             
             // Is existing user?
             signInUser(details.email, details.password, err => {
-                console.log(err)
-                // if(err.msg.includes('auth/wrong-password')){
-                //     msg('Wrong Password!', 'error');
-                // }
+                msg(translateFirebaseError(err), 'error');
             }, () => {
                 msg('Log in request successful!', 'success');
                 localStorage.setItem('user', JSON.stringify(details))
@@ -100,7 +97,7 @@ function SignupInit() {
 				details.email,
 				details.password,
 				err => {
-                    msg(err, 'error');
+                    msg(translateFirebaseError(err), 'error');
 				},
                 () => {
                     msg('Account created!', 'success');
