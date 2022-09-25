@@ -100,7 +100,7 @@ function SignupInit() {
 				details.email,
 				details.password,
 				err => {
-                    msg('Email already registered!', 'error');
+                    msg(err, 'error');
 				},
                 () => {
                     msg('Account created!', 'success');
