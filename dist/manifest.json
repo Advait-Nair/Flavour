@@ -8,25 +8,38 @@
 	"scope": "/",
 	"short_name": "Coordinata",
 	"start_url": "/",
-	"theme_color": "#0781ff",
+	"theme_color": "#8F00FF",
 	"categories": ["Services", "Events", "Event Organisation", "Software", "Utilities"],
 	"screenshots": [""],
     "shortcuts": [
         {
             "name":"Dashboard",
             "url":"/#page_dashboard",
-            "description":"Go to your dashboard"
+            "description":"Go to your dashboard",
+            "icons": [
+                {
+                    "src":"./Home_Shortcut.png",
+                    "type":"image/png"
+                }
+            ]
         },
         {
             "name":"Join Event",
             "url":"/#page_join",
-            "description":"Join an event using a code."
+            "description":"Join an event using a code.",
+            "icons": [
+                {
+                    "src":"./Join_Event_Shortcut.png",
+                    "type":"image/png"
+                }
+            ]
         }
     ],
     "icons": [
         {
-        "src": "/assets/coordinata.png",
-        "type": "image/png"
+        "src": "./coordinata.png",
+        "type": "image/png",
+        "sizes": "875x875"
         },
         {
         "src": "/favicon.ico",
