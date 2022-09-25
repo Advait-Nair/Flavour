@@ -61,11 +61,28 @@ const topbarRedirect = document.querySelectorAll('.topbar .redirect');
 const hash = document.location.hash;
 redir(hash.replace('#', '') || `${base.page_prefix}${base.homepage}`);
 showTopbar();
-
+document.addEventListener('DOMContentLoaded', e => {
+	console.log(hash)
+	if(hash == '#page_dashboard' || hash == '#page_start') {
+		console.log('u');
+		document.querySelector('.back-btn').classList.add('side-hidden');
+	} else {
+		console.log('no')
+		document.querySelector('.back-btn').classList.remove('side-hidden');
+	}
+})
 window.onhashchange = () => {
 	const hash = document.location.hash;
 	redir(hash.replace('#', '') || `${base.page_prefix}${base.homepage}`);
 	showTopbar();
+	console.log(location.hash)
+	if (hash == '#page_dashboard' || hash == '#page_start') {
+		console.log('u');
+		document.querySelector('.back-btn').classList.add('side-hidden');
+	} else {
+		console.log('no');
+		document.querySelector('.back-btn').classList.remove('side-hidden');
+	}
 }
 
 listenForScroll();

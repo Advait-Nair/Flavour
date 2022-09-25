@@ -12,11 +12,9 @@
 
 
     <script type="module">
-        if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-        }
-
-
+        // if ('serviceWorker' in navigator) {
+        // navigator.serviceWorker.register('service-worker.js');
+        // }
     </script>
     <!-- Meta -->
     
@@ -25,7 +23,7 @@
     <meta name="keywords" content="event, organisation, adva, advait, adva group, event organisation, new, workflow, superpower workflow">
     <meta name="author" content="Advait Nair, Adva Group, Coordinata">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#8F00FF">
+    <meta class="theme-color" name="theme-color" content="#B556FF">
     <!-- OpenGraph -->
     <meta name="og:type" content="service">
     <meta name="og:title" content="Adva Coordinata | Organise events with ease, anytime, anywhere">
@@ -140,8 +138,13 @@
 </head>
 <body>
     <nav class="topbar">
-        <div class="p-half version-info">
-            <span class="greyed-text glass round-4 p-half">v0.1</span>
+        <!-- <span class="greyed-text glass round-4">v0.1</span> -->
+        <div class="p-half version-info flex flex-align-center flex-justify-center flex-column">
+            <a style="color:#af5aff !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();"><div class="flex flex-align-center flex-justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+</svg> <span class="text-c">Return &nbsp;</span>
+            </div></a>
         </div>
         <div class="p-1 error-container glass round-4 flex flex-column">
             <span class="greyed-text text-r font-inter s-caption err-caption">
@@ -246,9 +249,9 @@
     
 
     <div id="page_tandc" class="page container font-inter">
-        <div class="btn-wrapper flex flex-align-center flex-justify-center">
+        <!-- <div class="btn-wrapper flex flex-align-center flex-justify-center">
             <button class="dark p-1 round-2 z100" onclick="redir('page_creation');">Return</button>
-        </div>
+        </div> -->
         <h1 class="p-1 bold">Terms and Conditions</h1>
         <section class="p-1 dark round-4">
             <h1 class="bold">Our Contact Information</h1>
@@ -325,6 +328,11 @@
         <h1>Coordinata</h1>
         <h4 class="greyed-text">Adva Software Group</h4>
     </div> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', e => {
+            document.querySelector('.theme-color').content = '#333';
+        })
+    </script>
 
     <script type="module" src="js/firebase.js"></script>
     <script type="" src="js/singlePageApp.js"></script>

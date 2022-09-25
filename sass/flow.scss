@@ -147,12 +147,12 @@ $highlight-frigus-purpura: $highlight-full-pars rgba($frigus-purpura, 0.6);
     font-family: $font-main;
     line-height: 1.2;
     font-weight: $font-regular;
-    color: $font-main-color
 }
 
 body {
     background: $mode;
     overflow-x: hidden;
+    color: $font-main-color
 }
 
 

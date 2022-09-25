@@ -8,7 +8,7 @@
 	"scope": "/",
 	"short_name": "Coordinata",
 	"start_url": "/",
-	"theme_color": "#8F00FF",
+	"theme_color": "#B556FF",
 	"categories": ["Services", "Events", "Event Organisation", "Software", "Utilities"],
 	"screenshots": [""],
     "shortcuts": [
