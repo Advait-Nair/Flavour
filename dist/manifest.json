@@ -2,7 +2,7 @@
 	"background_color": "#ffffff",
 	"description": "Check in to your event today with Coordinata! Organise your very own event with Coordinata today!",
 	"dir": "ltr",
-	"display": "minimal-ui",
+	"display": "standalone",
 	"name": "Coordinata",
 	"orientation": "portrait",
 	"scope": "/",
