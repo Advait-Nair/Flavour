@@ -103,12 +103,17 @@
     width: 100%;
     height: 100%;
     background: #00000096;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .modal {
-        position: absolute;
-        top: 10%;
-        left: 10%;
-        width: 80%;
-        height: 80%;
+        // position: absolute;
+        // top: 10%;
+        // left: 10%;
+        // width: 80%;
+        // height: 80%;
+        margin: 0 1rem;
+        width: 50ch;
     }
 }
 .generic-wrapper {
@@ -126,12 +131,12 @@
     }
 }
 
-.input-incorrect {
-    outline: #ff3636;
-    &::before {
+// .input-incorrect {
+//     outline: #ff3636;
+//     &::before {
         
-    }
-}
+//     }
+// }
 
 .z--1 {
     z-index: -1;
@@ -164,19 +169,32 @@
 
 .hidden {
     display: none !important;
+    opacity: 0;
+}
+#page_splash {
+    opacity: 1;
 }
 .side-hidden {
     transform: translateX(-9rem) !important;
 }
+.transition {
+    transition: 200ms ease-in-out;
+}
+.up-hidden {
+    transform: translateY(-9rem) !important;
+}
+
 .back-btn {
     cursor: pointer;
     display: block;
     transition: all 0.2s ease-in-out;
     transform: translateX(0);
     font-size: 0.9rem;
+    user-select: none;
 }
 button {
     outline: none;
+    
 }
 
 .disabled {
@@ -216,3 +234,102 @@ input.disabled {
     z-index: 100;
 }
 
+.splash-icon {
+    width: 5rem;
+    height: 5rem;
+}
+
+.adva-logo-mini {
+    opacity: .2;
+    height: 1rem;
+}
+
+.main-splash {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loading-blob {
+    border-radius: 20rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #af5aff;
+}
+.loading-blob-1 {
+    animation: forwards 1s 200ms ease-in-out loadinganim infinite;
+}
+.loading-blob-2 {
+    animation: forwards 1s 400ms ease-in-out loadinganimreverse infinite;
+}
+.loading-blob-3 {
+    animation: forwards 1s 600ms ease-in-out loadinganimreverse infinite;
+}
+.burnt {
+    background: #161616;
+    backdrop-filter: blur(12px);
+    opacity: 0.6;
+}
+
+.topbar {
+    justify-content: space-between;
+}
+
+@keyframes loadinganim {
+    0% {
+        // transform: translateY(0) translateX(0);
+    }
+    50% {
+        // transform: translateY(-2rem) translateX(0);
+        height: 7rem;
+        border-radius: .7rem;
+        opacity: .8;
+        background: rgb(153, 72, 255);
+        transform: translateY(-3.5rem);
+    }
+    100% {
+        // transform: translateY(0) translateX(0);
+    }
+}
+@keyframes loadinganimreverse {
+    0% {
+        // transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-3.5rem);
+        height: 7rem;
+        border-radius: .7rem;
+        opacity: .8;
+        background: rgb(153, 74, 255);
+    }
+    100% {
+        // transform: translateY(0) translateX(0);
+    }
+}
+@keyframes loadinganimstraight {
+    0% {
+        // transform: translateY(0) translateX(0);
+    }
+    50% {
+        // transform: translateY(-2rem) translateX(0);
+    }
+    100% {
+        // transform: translateY(0) translateX(0);
+    }
+}
+
+
+// splash animations
+
+.up-out {
+    transform: translate(-1.6rem);
+    opacity: 0;
+}
+.down-out {
+    transform: translate(1.6rem);
+    opacity: 0;
+}
+
+.opacity-zero {
+    opacity: 0;
+}

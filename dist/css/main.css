@@ -115,14 +115,14 @@
   width: 100%;
   height: 100%;
   background: #00000096;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-wrapper .modal {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
+  margin: 0 1rem;
+  width: 50ch;
 }
 
 .generic-wrapper {
@@ -139,10 +139,6 @@
   left: 10%;
   width: 80%;
   height: 80%;
-}
-
-.input-incorrect {
-  outline: #ff3636;
 }
 
 .z--1 {
@@ -180,10 +176,23 @@
 
 .hidden {
   display: none !important;
+  opacity: 0;
+}
+
+#page_splash {
+  opacity: 1;
 }
 
 .side-hidden {
   transform: translateX(-9rem) !important;
+}
+
+.transition {
+  transition: 200ms ease-in-out;
+}
+
+.up-hidden {
+  transform: translateY(-9rem) !important;
 }
 
 .back-btn {
@@ -192,6 +201,7 @@
   transition: all 0.2s ease-in-out;
   transform: translateX(0);
   font-size: 0.9rem;
+  user-select: none;
 }
 
 button {
@@ -236,4 +246,100 @@ input.disabled {
 
 .modal {
   z-index: 100;
+}
+
+.splash-icon {
+  width: 5rem;
+  height: 5rem;
+}
+
+.adva-logo-mini {
+  opacity: .2;
+  height: 1rem;
+}
+
+.main-splash {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loading-blob {
+  border-radius: 20rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #af5aff;
+}
+
+.loading-blob-1 {
+  animation: forwards 1s 200ms ease-in-out loadinganim infinite;
+}
+
+.loading-blob-2 {
+  animation: forwards 1s 400ms ease-in-out loadinganimreverse infinite;
+}
+
+.loading-blob-3 {
+  animation: forwards 1s 600ms ease-in-out loadinganimreverse infinite;
+}
+
+.burnt {
+  background: #161616;
+  backdrop-filter: blur(12px);
+  opacity: 0.6;
+}
+
+.topbar {
+  justify-content: space-between;
+}
+
+@keyframes loadinganim {
+  0% {
+  }
+  50% {
+    height: 7rem;
+    border-radius: .7rem;
+    opacity: .8;
+    background: #9948ff;
+    transform: translateY(-3.5rem);
+  }
+  100% {
+  }
+}
+
+@keyframes loadinganimreverse {
+  0% {
+  }
+  50% {
+    transform: translateY(-3.5rem);
+    height: 7rem;
+    border-radius: .7rem;
+    opacity: .8;
+    background: #994aff;
+  }
+  100% {
+  }
+}
+
+@keyframes loadinganimstraight {
+  0% {
+  }
+  50% {
+  }
+  100% {
+  }
+}
+
+.up-out {
+  transform: translate(-1.6rem);
+  opacity: 0;
+}
+
+.down-out {
+  transform: translate(1.6rem);
+  opacity: 0;
+}
+
+.opacity-zero {
+  opacity: 0;
 }

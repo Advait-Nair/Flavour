@@ -117,20 +117,30 @@ function SignupInit() {
 
 
 
-redir('page_loading');
-document.addEventListener('DOMContentLoaded', e => {
-    SignupInit();
-    SigninInit();
-    AutoInit();
-})
-
-
-
-
-
-if (!localStorage.getItem('user')) {
-    redir('page_start');
+onSplash();
+if (!sessionStorage.getItem('session')) {
+    redir('page_splash');
+    sessionStorage.setItem('session', 'TRUE');
+} else {
+    redir('page_loading');
 }
+document.addEventListener('DOMContentLoaded', e => {
+    let loadtime = 4000;
+    if (sessionStorage.getItem('session')){
+        loadtime = 2000;
+    }
+    setTimeout(() => {
+
+        finishSplash(() => {
+            if (!localStorage.getItem('user')) {
+                SignupInit();
+                SigninInit();
+                AutoInit();
+                redir('page_start');
+            }
+        });
+    }, loadtime);
+})
 
 // To export and use
 
@@ -300,4 +310,22 @@ function AutoInit() {
 
 }
 
-// todo get details from funnel - look at promises etc
+function onSplash() {
+	document.querySelector('.topbar').classList.add('hidden');
+	document.querySelector('body').classList.add('no-overflow');
+}
+function finishSplash(after) {
+    document.querySelector('.splash-icon').classList.add('up-out');
+    document.querySelector('.adva-alt-splash').classList.add('down-out');
+    document.querySelector('#page_splash').classList.add('opacity-zero');
+    document.querySelector('#page_loading').classList.add('opacity-zero');
+    setTimeout(() => {
+        document.querySelector('.topbar').classList.remove('hidden');
+        document.querySelector('body').classList.remove('no-overflow');
+        after();
+    },200);
+}
+
+function lerpColor() {
+
+}

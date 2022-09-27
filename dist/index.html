@@ -12,10 +12,11 @@
 
 
     <script type="module">
-        if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-        }
+        // if ('serviceWorker' in navigator) {
+        // navigator.serviceWorker.register('service-worker.js');
+        // }
     </script>
+    
     <!-- Meta -->
     
     <!-- Basic -->
@@ -140,7 +141,7 @@
     <nav class="topbar">
         <!-- <span class="greyed-text glass round-4">v0.1</span> -->
         <div class="p-half version-info flex flex-align-center flex-justify-center flex-column">
-            <a style="color:#af5aff !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();"><div class="flex flex-align-center flex-justify-center">
+            <a style="color:#5f5de9 !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();"><div class="flex flex-align-center flex-justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 </svg> <span class="text-c">Return &nbsp;</span>
@@ -194,7 +195,6 @@
                 data-action='submit' type="submit" class="g-recaptcha btn m-1 input-field p-1 round-4">Continue</button>
                 <h6 class="text-c">Just as a reminder, check out the <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h6>
             </form>
-            <button onclick="redir('page_start')" class="text-c pointer p-1 m-1 dark round-4 third-width">Back</button>
         </div>
     </div>
 
@@ -221,7 +221,6 @@
 
 
             </form>
-            <button onclick="redir('page_start')" class="text-c pointer p-1 m-1 dark round-4 third-width">Back</button>
         </div>
     </div>
 
@@ -313,12 +312,24 @@
             </div>
         </div>
     </div>
-    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_loading">
+    <div class="page pt-0 pb-0 pr-0 font-inter no-overflow transition" id="page_loading">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
-            <div class="main">
-
-                <h1>Loading</h1>
-                <h3>We're getting things up and running for you</h3>
+            <div class="loading-wrapper">
+                <div class="loading-animator flex flex-align-center flex-justify-center">
+                    <div class="loading-blob-1 loading-blob m-1"></div>
+                    <div class="loading-blob-2 loading-blob m-1"></div>
+                    <div class="loading-blob-3 loading-blob m-1"></div>
+                </div>
+            </div>
+            <!-- <p class="greyed-text text-c p-1">Loading</p> -->
+        </div>
+    </div>
+    <div class="page transition light pt-0 pb-0 pr-0 font-inter no-overflow" id="page_splash">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <div class="main-splash container flex flex-align-center max-full-viewport-height full-width flex-column transition">
+                <div class="empty"></div>
+                <img class="splash-icon transition" src="./coordinata_mono.png" alt="cd">
+                <div class="pb-3 greyed-text text-c block font-inter adva-alt-splash transition">An <img class="adva-logo-mini" src="./gslogo.png" alt="Adva"> Product</div>
             </div>
         </div>
     </div>
