@@ -8,6 +8,10 @@
   min-height: 100vh;
 }
 
+.font-mono {
+  font-family: monospace !important;
+}
+
 .p-half {
   padding: 0.5rem;
 }
@@ -109,20 +113,48 @@
 }
 
 .modal-wrapper {
-  position: absolute;
+  position: fixed;
+  backdrop-filter: blur(13px);
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
   background: #00000096;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
 }
 
-.modal-wrapper .modal {
-  margin: 0 1rem;
+.modal-wrapper .bottom-tray, .modal-wrapper .modal-content-box {
+  position: absolute;
+  border-radius: 1rem;
+  margin: 0.1rem;
   width: 50ch;
+  max-width: 100%;
+  opacity: 0.9;
+}
+
+.modal-wrapper .bottom-tray .dark, .modal-wrapper .modal-content-box .dark {
+  background: #212121;
+}
+
+.modal-wrapper .bottom-tray h1, .modal-wrapper .bottom-tray h2, .modal-wrapper .bottom-tray h3, .modal-wrapper .bottom-tray h4, .modal-wrapper .bottom-tray h5, .modal-wrapper .bottom-tray h6, .modal-wrapper .modal-content-box h1, .modal-wrapper .modal-content-box h2, .modal-wrapper .modal-content-box h3, .modal-wrapper .modal-content-box h4, .modal-wrapper .modal-content-box h5, .modal-wrapper .modal-content-box h6 {
+  background: #333 !important;
+}
+
+.modal-wrapper .modal-content-box {
+  bottom: 6rem;
+  max-height: calc(100vh - 6rem);
+  margin: 0.3rem;
+}
+
+.modal-wrapper .bottom-tray {
+  bottom: 0;
+  margin: 0.3rem;
+  margin-bottom: 0.3rem;
 }
 
 .generic-wrapper {
@@ -208,6 +240,10 @@ button {
   outline: none;
 }
 
+button:active {
+  z-index: 5;
+}
+
 .disabled {
   content: '';
   position: relative;
@@ -242,10 +278,6 @@ input.disabled {
 
 .no-border {
   border: none;
-}
-
-.modal {
-  z-index: 100;
 }
 
 .splash-icon {
@@ -287,6 +319,112 @@ input.disabled {
   background: #161616;
   backdrop-filter: blur(12px);
   opacity: 0.6;
+}
+
+.topleft-abs {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.topright-abs {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.bottomright-abs {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+}
+
+.bottomleft-abs {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+}
+
+.enableDEBUG {
+  z-index: 100000000000000;
+  transition: all 0.5s ease-in-out;
+  max-width: 100vw;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  backdrop-filter: blur(9px);
+  background: #121212ef;
+  width: 2.5rem;
+}
+
+.enableDEBUG .underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.enableDEBUG .underline::before {
+  position: absolute;
+  bottom: 0.1rem;
+  height: .1rem;
+  width: 1ch;
+  content: '';
+  background: #ddd;
+}
+
+.enableDEBUG .underline::after {
+  content: '>';
+}
+
+.enableDEBUG:before {
+  content: '';
+  display: inline;
+  position: absolute;
+  top: .55rem;
+  right: 2.7rem;
+  text-overflow: clip;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  color: #ffffffc5;
+}
+
+.enableDEBUG:hover {
+  border-radius: 10rem;
+  backdrop-filter: blur(9px);
+  background: #121212ef;
+  width: 10rem;
+}
+
+.enableDEBUG:hover:before {
+  content: 'Debug';
+  display: inline;
+  font-size: 1rem;
+}
+
+.enableDEBUG:hover .underline:before {
+  content: '';
+  right: 0rem;
+}
+
+.enableDEBUG:hover::after {
+  content: '';
+}
+
+.DEBUG {
+  background: #121212;
+  max-width: 60vw;
+}
+
+.DEBUG .log-wrapper {
+  max-width: 60vw;
+}
+
+.DEBUG .log-wrapper .log {
+  max-height: 50vh;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .topbar {
@@ -342,4 +480,78 @@ input.disabled {
 
 .opacity-zero {
   opacity: 0;
+}
+
+.dash-fname, .dash-lname, .fetching {
+  transition: all ease-in-out 200ms;
+}
+
+.dash-fname:empty, .dash-lname:empty, .fetching:empty {
+  filter: blur(8px);
+}
+
+.dash-fname:empty::before, .dash-lname:empty::before, .fetching:empty::before {
+  content: '-----';
+}
+
+.current {
+  background: #0781ff;
+}
+
+.slightly-grey {
+  color: #eee;
+}
+
+.signed-up-events, .signed-up-events * {
+  font-size: 0.8rem;
+}
+
+.log-info, .log-warn, .log-error {
+  margin: 0.5rem;
+}
+
+.log-info {
+  background: #ffffff1e;
+}
+
+.log-warn {
+  background: #ffaa1896;
+  color: #dab88c;
+}
+
+.log-error {
+  background: #ff181896;
+  color: #da8c8c;
+}
+
+.log .content {
+  word-wrap: break-word;
+}
+
+.wrap {
+  word-wrap: break-word;
+}
+
+.auto-overflow {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 767px) {
+  ::-webkit-scrollbar {
+    width: 3px;
+    background-color: #00000016;
+  }
+  .DEBUG {
+    background: #121212;
+    max-width: 90vw;
+  }
+  .DEBUG .log-wrapper {
+    max-width: 60vw;
+  }
+  .modalTitle {
+    background: rgba(0, 0, 0, 0) !important;
+    text-align: center;
+    width: 100%;
+  }
 }

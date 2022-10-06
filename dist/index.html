@@ -43,28 +43,14 @@
         let auth = null;
     </script>
     <script type="module">
-        const closing = true;
-        const textIsContent = true;
     import { signOutUser } from './js/firebase.js';
-    import { msg, modal, advancedModal } from './js/main.js';
-    window.logOut = function () {
-        localStorage.clear();
-        signOutUser(err => {
-            console.error(err);
-        }, () => {
-            msg('Logged out successfully!', 'success');
-        });
-    }
-    window.settings = () => {
-        advancedModal('User Settings', [
-            {tag:'h3', text:'Edit Name', class:'bold block card text-l no-border p-0 full-width', closing, textIsContent},
-            {tag:'input', text:'First Name', class:'m-1'},
-            {tag:'input', text:'Last Name', class:'m-1'},
-        ], data => {
-            console.log(data);
-        });
-    }
+    import { msg } from './js/main.js';
+    import { modal } from './js/UI.js';
+    import { log, rawLog, displayPages, storageOps } from './js/debug.js'
 
+    window.vconsole_items = [];
+    window.pagePrompt = displayPages;
+    window.LS = storageOps;
     const d_console = {
         log: console.log,
         warn: console.warn,
@@ -74,6 +60,21 @@
     console.enable = code => {
         localStorage.setItem('DEBUG',code)
     }
+    document.querySelector('.enableDEBUGMODE').addEventListener('submit', () => {
+        if(document.querySelector('.dbgp').value == '7422') {
+            console.enable('7422')
+            document.querySelector('.dbgapply').classList.remove('hidden');
+        }
+    })
+    if (localStorage.getItem('DEBUG') && localStorage.getItem('DEBUG') === '7422'){
+        document.querySelector('.enableDEBUG').classList.remove('hidden');
+    }
+    document.querySelector('.enableDEBUG').addEventListener('click', () => {
+        document.querySelector('.DEBUG').classList.toggle('hidden');
+    });
+    document.querySelector('.evaluation-form').addEventListener('submit', e => {
+        eval(document.querySelector('.evaluation').value)
+    });
     console.isDebug = () => {
         let isDebug = false;
         if (localStorage.getItem('DEBUG') && localStorage.getItem('DEBUG') === '7422'){
@@ -86,7 +87,7 @@
 
     // https://javascript.plainenglish.io/lets-extend-console-log-8641bda035c3
     console.log = function(x) {
-
+        
         // 1. Convert args to a normal array
         var args = Array.from(arguments);
         // OR you can use: Array.prototype.slice.call( arguments );
@@ -95,6 +96,19 @@
         // 3. Pass along arguments to console.log
         if(console.isDebug(args)){
         d_console.log.apply(console, args);
+        log('info', 'LOG', args);
+        }
+    }
+    console.debugLog = function(x) {
+        
+        // 1. Convert args to a normal array
+        var args = Array.from(arguments);
+        // OR you can use: Array.prototype.slice.call( arguments );
+        
+            
+        // 3. Pass along arguments to console.log
+        if(console.isDebug(args)){
+        rawLog('info', 'DEBUG', args);
         }
     }
     console.info = function(x) {
@@ -107,6 +121,7 @@
         // 3. Pass along arguments to console.info
         if(console.isDebug(args)){
         d_console.info.apply(console, args);
+        log('info', 'LOG', args);
         }
     }
     console.warn = function(x) {
@@ -119,6 +134,7 @@
         // 3. Pass along arguments to console.warn
         if(console.isDebug(args)){
         d_console.warn.apply(console, args);
+        log('warn', 'WARN', args);
         }
     }
     console.error = function(x) {
@@ -131,6 +147,7 @@
         // 3. Pass along arguments to console.error
         if(console.isDebug(args)){
         d_console.error.apply(console, args);
+        log('error', 'ERROR', args);
         }
     }
 
@@ -138,7 +155,44 @@
     </script>
 </head>
 <body>
+    <Application-Body>
+    <div class="DEBUG-TOOLS">
+    </div>
     <nav class="topbar">
+        <button class="round-4 dark font-1 text-c topright-abs enableDEBUG hidden">&nbsp;<span class="underline"></span>&nbsp;</button>
+        <div class="DEBUG round-4 topleft-abs p-1 z100 font-inter hidden">
+            <div class="grid">
+                <div class="log-wrapper">
+                    <div class="s-caption p-key">LOG MESSAGES</div>
+                    <div class="round-4 dark p-key log">
+                        <!-- <div class="log-info card p-key">
+                            <div class="s-caption">LOG</div>
+                            <p class="content p-key">All Rounds successfully completed.</p>
+                        </div>
+                        <div class="log-warn card p-key">
+                            <div class="s-caption">WARN</div>
+                            <p class="content p-key">All Rounds successfully completed.</p>
+                        </div>
+                        <div class="log-error card p-key">
+                            <div class="s-caption">ERROR</div>
+                            <p class="content p-key">All Rounds successfully completed.</p>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="right flex flex-align-center flex-column flex-justify-center">
+                    <!-- <h2 class="text-r">DEBUG</h2>
+                    <p class="text-r">CD Debug Log - Perform debugging through mobile console. Not to be used unless you know what you are doing!</p> -->
+                </div>
+            </div>
+            <form class="evaluation-form">
+                <input type="text" placeholder="Type a command..." class="round-4 dark no-outline mt-1 p-1 full-width evaluation">
+            </form>
+            <div class="action-tray pt-1">
+                <button onclick="document.designMode == 'on' ? document.designMode = 'off' : document.designMode = 'on'" class="round-4 p-key dark">Design Mode</button>
+                <button onclick="window.pagePrompt()" class="round-4 p-key dark">Pages</button>
+                <button onclick="window.LS()" class="round-4 p-key dark">Storage</button>
+            </div>
+        </div>
         <!-- <span class="greyed-text glass round-4">v0.1</span> -->
         <div class="p-half version-info flex flex-align-center flex-justify-center flex-column">
             <a style="color:#5f5de9 !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();"><div class="flex flex-align-center flex-justify-center">
@@ -154,15 +208,22 @@
             <span class="error-pop py-quarter">Use <span class="card p-key">Tab</span> to navigate</span>
         </div>
     </nav>
+    <div id="page_vconsole" class="container p-2 pt-4 page">
+        <h1 class="greyed-text font-inter">View Console Log</h1>
+        <br><br>
+        <div class="vconsole-inserter wrap auto-overflow font-mono">
+            <div class="greyed-text font-mono">No logs to be viewed here. Select a log from the console.</div>
+        </div>
+    </div>
     <div id="page_join" class="container p-0 page">
         <form class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column joinEvent">
             <div class="mt-2 flex flex-align-center flex-justify-center flex-column">
                 <h4 class="text-l block half-width">Access Code</h4>
         
-                <input placeholder="000ABC" class="seccode p-1 mt-1 mb-1 no-outline dark round-3 font-3 text-c half-width" type="text-center">
+                <input placeholder="000ABC"  class="seccode p-1 mt-1 mb-1 no-outline dark round-3 font-3 text-c half-width" type="text">
             </div>
             <button type="submit" class="round-4 p-1 m-1 third-width">Join Event!</button>
-            <div class="greyed-text p-1 pt-4 half-width text-c">
+            <div class="greyed-text pt-4 half-width text-c">
                 Access codes are special 6 character codes that are given out by event organisers so that you can join their events. To get an access code, simply ask the event organiser through some mean of communication such as a website. In short, these 6 character codes are used to access an event.
             </div>
         </form>
@@ -193,7 +254,8 @@
                 data-sitekey="6LcvaQwiAAAAADM-baURJSIR2Or0k64v9wisGcgl" 
                 data-callback='onSubmit' 
                 data-action='submit' type="submit" class="g-recaptcha btn m-1 input-field p-1 round-4">Continue</button>
-                <h6 class="text-c">Just as a reminder, check out the <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h6>
+                <h5 class="text-c">Just as a reminder, check out the <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h5>
+                <h5 class="text-c p-1"><a onclick="redir('page_contact')" class="pointer">Need Help?</a></h5>
             </form>
         </div>
     </div>
@@ -217,19 +279,47 @@
                 data-sitekey="6LcvaQwiAAAAADM-baURJSIR2Or0k64v9wisGcgl" 
                 data-callback='onSubmit' 
                 data-action='submit' type="submit" class="g-recaptcha btn m-1 input-field p-1 round-4">Continue</button>
-                <h6 class="text-c">By creating a player ID, you consent to the following <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h6>
+                <h5 class="text-c">By creating a player ID, you consent to the following <a onclick="redir('page_tandc')" class="pointer">Terms & Conditions.</a></h5>
 
 
             </form>
         </div>
     </div>
 
-
+    <div id="page_signed_up_events" class="container page">
+        <h1 class="text-c p-1 m-1">Your Events</h1>
+        <div class="mt-1 m-1 p-1 pb-0 p-half dark round-5 flex flex-align-center flex-justify-center">
+            <div class="dark round-5 signed-up-events">
+                <div class="greyed-text mb-1">
+                    You haven't registered to an event.
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Dashboard -->
     <div id="page_dashboard" class="container page">
         <h1 class="text-c p-1 m-1">Dashboard</h1>
-        <h4 class="text-c greyed-text" >Logged in as <span class="dash-fname">___</span> <span class="dash-lname">_____</span></h4>
-        <h5 class="dash-email greyed-text text-c"></h5>
+        <h4 class="text-c" ><span class="greyed-text"> Logged in as </span><span class="dash-fname"></span> <span class="dash-lname"></span></h4>
+        <h5 class="dash-email greyed-text text-c fetching"></h5>
+        <div class="your-events dark no-border round-5 p-1 mt-1 mb-1">
+            <div class="p-1 mt-1 flex flex-align-center flex flex-justify-center">
+                <div class="left">
+                    <h3 class="pl-1 pr-1 greyed-text" >Your events</h3>
+                    <span class="greyed-text text-c full-width font-inter s-caption p-1">CLICK TO SWITCH</span>
+                </div>
+                <div class="right">
+                    <button class="round-5 p-1" onclick="redir('page_signed_up_events')">Switch</button>
+                </div>
+            </div>
+            <div class="info p-1 m-1 flex flex-align-center flex-justify-center dark round-4">
+                <div class="center current-event">
+                    <button class="event-item dark card no-border round-5 p-1">
+                        <h5 class="event-code slightly-grey text-l">Select or register to an event</h5>
+                        <span class="event-name fetching">No current selected event</span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="grid-2 grid event-on disabled">
             <button class="p-1 dark round-4 m-1 inline">QR Code</button>
             <button class="p-1 dark round-4 m-1 inline">Your Status</button>
@@ -312,7 +402,16 @@
             </div>
         </div>
     </div>
-    <div class="page pt-0 pb-0 pr-0 font-inter no-overflow transition" id="page_loading">
+    <div class="page container p-2 font-inter no-overflow" id="page_dbg">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <form class="enableDEBUGMODE">
+                <input type="text" class="round-4 p-1 dark no-outline dbgp full-width">
+            </form>
+            <button class="dark round-4 p-1 third-width mt-1 hidden dbgapply" onclick="location.reload();">Apply</button>
+            
+        </div>
+    </div>
+    <div class="page z100 pt-0 pb-0 pr-0 font-inter no-overflow transition" id="page_loading">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
             <div class="loading-wrapper">
                 <div class="loading-animator flex flex-align-center flex-justify-center">
@@ -333,7 +432,35 @@
             </div>
         </div>
     </div>
-    
+    <div class="page transition light pt-0 pb-0 pr-0 font-inter no-overflow" id="page_install">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
+            <div class="main-splash container flex flex-align-center max-full-viewport-height full-width flex-column transition">
+                <div class="empty"></div>
+                <div class="main flex flex-align-center flex-justify-center flex-column">
+                    <img class="splash-icon transition" src="./coordinata_mono.png" alt="cd">
+                    <button class="round-4 p-1 m-1">Install Coordinata</button>
+                    <button class="round-4 p-1 m-1 dark">Continue with web app</button>
+                </div>
+                <div class="pb-3 greyed-text text-c block font-inter adva-alt-splash transition">An <img class="adva-logo-mini" src="./gslogo.png" alt="Adva"> Product</div>
+            </div>
+        </div>
+    </div>
+     <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_contact">
+        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex generic-wrapper">
+            <div class="main blend dark blend-off z-2 inline p-1 round-4 m-1">
+                <h1>Contact Us</h1>
+                <h3>Something is not working? Forgot your password? Or just want to suggest a feature?</h3>
+                <h4>Contact us at: <a href="mailto:main.adva@gmail.com">main.adva@gmail.com</a> </h4>
+                <button class="card no-border round-4 p-1 third-width mt-1" onclick="history.back();">Back</button>
+            </div>
+            <!-- <div class="deco-wrapper generic-wrapper z--1">
+                <div class="deco">
+                    <h1 class="darked-text">coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata</h1>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    </Application-Body>
     <!-- <div class="footer full-width p-1 text-c">
         <img class="img-small round-4" src="assets/coordinata.png" alt="cd">
         <h1>Coordinata</h1>
@@ -341,10 +468,13 @@
     </div> -->
     <script>
         document.addEventListener('DOMContentLoaded', e => {
-            document.querySelector('.theme-color').content = '#333';
+            document.querySelector('.theme-color').content = '#222';
         })
     </script>
 
+
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/UI.js"></script>
     <script type="module" src="js/firebase.js"></script>
     <script type="" src="js/singlePageApp.js"></script>
     <script type="module" src="js/main.js"></script>

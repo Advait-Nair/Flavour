@@ -131,11 +131,15 @@ $highlight-frigus-purpura: $highlight-full-pars rgba($frigus-purpura, 0.6);
 
 
 *::-webkit-scrollbar {
-    width: 13px;
+    width: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+    border: none;
 }
 *::-webkit-scrollbar-thumb:hover {
     transition: $transition;
-    background-color: #aaa;
+    background-color: rgba(112, 112, 112, 0.602);
 }
 
 
@@ -152,6 +156,7 @@ $highlight-frigus-purpura: $highlight-full-pars rgba($frigus-purpura, 0.6);
 body {
     background: $mode;
     overflow-x: hidden;
+    overflow-y: scroll;
     color: $font-main-color
 }
 

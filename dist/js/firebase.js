@@ -9,7 +9,7 @@ import {
     onAuthStateChanged,
     sendEmailVerification
 } from 'https://www.gstatic.com/firebasejs/9.9.4/firebase-auth.js';
-import {modal} from './main.js';
+import {modal, closing, textIsContent} from './UI.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -34,6 +34,7 @@ import {
     getDoc,
     setDoc,
 } from 'https://www.gstatic.com/firebasejs/9.9.4/firebase-firestore.js';
+import { msg } from './main.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -78,7 +79,11 @@ export function createUser(fname, lname, email, password, errorFunc, successFunc
     .then(userCredential => {
             sendEmailVerification(userCredential.user);
             
-            createUserDataFunnel(userCredential.user, fname, lname);
+            createUserDataFunnel(userCredential.user, fname, lname).catch(
+				err => {
+					msg(translateFirebaseError(err));
+				}
+			);
             successFunc() || undefined;
         })
         .catch(err => {console.error(err.code, err.message); errorFunc(err);});
@@ -88,11 +93,31 @@ export function signInUser(email, password, errorFunc, successFunc) {
     .then(userCredential => {
         successFunc(userCredential) || undefined;
         DoesUserAlreadyHaveFunnel(userCredential.user.uid, () => {
-            modal('What is your name?', ['First Name', 'Last Name'], data => {
-                createUserDataFunnel(userCredential.user, data.First_Name, data.Last_Name);
-
-            });
-        })
+			// modal('What is your name?', ['First Name', 'Last Name'], data => {
+			// });
+			modal(
+				'What is your name?',
+				[
+					{
+						tag: 'p',
+						text: 'We need this as you currently do not have a name associated with your account.',
+						class: 'bold block card text-c no-border p-0 full-width',
+						closing,
+						textIsContent,
+					},
+					{ tag: 'input', text: 'First Name', class: 'm-1' },
+					{ tag: 'input', text: 'Last Name', class: 'm-1' },
+				],
+				data => {
+					// console.log(data);
+                    msg('Please wait...', 'success');
+                    createUserDataFunnel(userCredential.user, data.First_Name, data.Last_Name).catch(err => {
+                        msg(translateFirebaseError(err));
+                    });
+				},
+				false
+			);
+		})
     })
     .catch(err => {
         console.error(err.code, err.message);
@@ -149,7 +174,21 @@ export async function addToFunnel (uid, itemKey, itemObject) {
 	}, {merge: true});
 };
 
-export async function checkIfCodeIsValid (code, handle, error) {
+// export async function checkIfCodeIsValid (code, handle, error) {
+//     let exists = false;
+//     const querySnapshot = await getDocs(collection(db, 'codes'));
+//         querySnapshot.forEach(doc => {
+//             if(doc.id === code) {
+//                 exists = true;
+//                 handle(doc.data());
+//             }
+//         }
+//     );
+//     if (!exists) {
+//         error()
+//     }
+// }
+export async function getCodePublicisedData (code, handle, error) {
     let exists = false;
     const querySnapshot = await getDocs(collection(db, 'codes'));
         querySnapshot.forEach(doc => {
@@ -163,6 +202,22 @@ export async function checkIfCodeIsValid (code, handle, error) {
         error()
     }
 }
+
+export async function isSignedUptoEvent(user, codesCb) {
+	const querySnapshot = await getDocs(collection(db, 'users'));
+	querySnapshot.forEach(doc => {
+		if (doc.id === user.user.uid) {
+            codesCb(doc);
+		}
+	});
+	if (!exists) {
+		error();
+	}
+}
+
+
+
+
 
 export const firebaseErrors = {
 	'auth/claims-too-large': 'Claims payload exceeds maximum of 1000 bytes.',
@@ -222,6 +277,8 @@ export const firebaseErrors = {
     'auth/user-not-found':	'User not found.',
     'auth/weak-password':	'Your password is too weak. Password must be at least 6 characters long.',
     'auth/wrong-password':	'Password is wrong.',
+    'auth/email-already-in-use':	'This email is already registered!',
+    'auth/too-many-requests':	'A lot of requests have been sent recently to this ID, and so access has been temporarily disabled. Please contact us for more info.',
 };
 export function translateFirebaseError (errMsg) {
     const errors = Object.keys(firebaseErrors);
@@ -234,3 +291,4 @@ export function translateFirebaseError (errMsg) {
     })
     return exportedError || errMsg;
 }
+

@@ -57,8 +57,22 @@ const topbar = document.querySelector('.topbar');
 const navbuttons = document.querySelector('.topbar .navbuttons');
 const topbarRedirect = document.querySelectorAll('.topbar .redirect');
 
-// set default page (if currently no hash)
+// set default page (if currently no hash
+
 const hash = document.location.hash;
+// if (
+// 	hash != '' ||
+// 	hash != '#page_loading' ||
+// 	hash != '#page_splash' ||
+// 	hash != '#page_signed_out'
+// ) {
+// 	redir(hash.replace('#', ''));
+// 	console.log(hash.replace('#', '') || `${base.page_prefix}${base.homepage}`);
+// }
+// else {
+// 	redir('page_dashboard')
+// 	console.log(hash.replace('#', '') || `${base.page_prefix}${base.homepage}`);
+// }
 redir(hash.replace('#', '') || `${base.page_prefix}${base.homepage}`);
 showTopbar();
 

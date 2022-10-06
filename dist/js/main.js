@@ -1,8 +1,18 @@
-import { createUser, signInUser, getUid, getFunnel, checkIfCodeIsValid, addToFunnel, translateFirebaseError } from './firebase.js';
+import {
+	createUser,
+	signInUser,
+	getUid,
+	getFunnel,
+	getCodePublicisedData,
+	addToFunnel,
+	translateFirebaseError,
+	isSignedUptoEvent,
+} from './firebase.js';
+import { executeFunctionInitiations, modal } from './UI.js';
 
 const errpopPrevContent = document.querySelector('.error-pop').innerHTML;
 const errCaptionPrevContent = document.querySelector('.err-caption').innerHTML;
-
+const splashWaitTime = 2000;
 
 function SigninInit(){
     const signinFormQS = '.sign-in-form'
@@ -116,30 +126,68 @@ function SignupInit() {
 }
 
 
+// let requestedPage = location.hash;
+// if (
+// 	requestedPage == '' ||
+// 	requestedPage == '#page_loading' ||
+// 	requestedPage == '#page_splash' ||
+// 	requestedPage == '#page_signed_out'
+// ) {
+//     console.log(requestedPage.replace);
+// 	redir('page_dashboard');
+// }
+// console.log(requestedPage); 0 
 
 onSplash();
+let waitTime = splashWaitTime;
 if (!sessionStorage.getItem('session')) {
     redir('page_splash');
     sessionStorage.setItem('session', 'TRUE');
 } else {
     redir('page_loading');
 }
+if(sessionStorage.getItem('session')) {
+    waitTime = 100;
+}
+// setTimeout(() => {
+//     document.querySelector('.topbar').classList.remove('hidden');
+//     document.querySelector('body').classList.remove('no-overflow');
+// }, waitTime + 200)
 document.addEventListener('DOMContentLoaded', e => {
-    let loadtime = 4000;
-    if (sessionStorage.getItem('session')){
-        loadtime = 2000;
+    // if (sessionStorage.getItem('session')){
+    //     loadtime = 100;
+    // }
+    // window.navigator.getBattery().then(d => console.log(d));
+    // // todo battery?
+    SignupInit();
+    SigninInit();
+    executeFunctionInitiations();
+    if(!localStorage.getItem('consent')) {
+        usageInfo();
+        localStorage.setItem('consent', 'understands')
     }
-    setTimeout(() => {
 
-        finishSplash(() => {
-            if (!localStorage.getItem('user')) {
-                SignupInit();
-                SigninInit();
-                AutoInit();
+    AutoInit(() => {
+        setTimeout(() => {
+            finishSplash(() => {
                 redir('page_start');
-            }
-        });
-    }, loadtime);
+            })
+        }, splashWaitTime + 200)
+        // if (!localStorage.getItem('user')) {
+        // } else {
+        //     redir('page_dashboard');
+        // }
+    });
+    // if (sessionStorage.getItem('session')) {
+	// 	finishSplash(() => {
+
+    //     });
+	// }
+
+    // setTimeout(() => {
+    //     finishSplash(() => {
+    //     });
+    // }, loadtime);
 })
 
 // To export and use
@@ -167,100 +215,58 @@ export function msg(msg, kind){
     }, 3000);
 };
 
-export function modal (title, fields, cb, fatal) {
-    if(!fields) return;
-    let fieldHTML = '';
-    let iteration = 0;
-    const output = {};
-    fields.forEach(element => {
-        output[element.replace(' ', '_').trim()] = {
-			id: `modalItem-${iteration}`,
-            name: '',
-		};
-        fieldHTML += `<${
-			fatal ? 'div' : 'input'
-		} data-mid="modalItem-${iteration}" placeholder="${element}" class="${
-			fatal ? 'disabled ' : ''
-		}modalChildItem p-1 m-1 no-outline dark round-3 input-field">`;
-        iteration++;
-    });
+// /* 
+//  * @Deprecated 
+// */
+// export function modal (title, fields, cb, fatal) {
+//     if(!fields) return;
+//     let fieldHTML = '';
+//     let iteration = 0;
+//     const output = {};
+//     fields.forEach(element => {
+//         output[element.replace(' ', '_').trim()] = {
+// 			id: `modalItem-${iteration}`,
+//             name: '',
+// 		};
+//         fieldHTML += `<${
+// 			fatal ? 'div' : 'input'
+// 		} data-mid="modalItem-${iteration}" placeholder="${element}" class="${
+// 			fatal ? 'disabled ' : ''
+// 		}modalChildItem p-1 m-1 no-outline dark round-3 input-field">`;
+//         iteration++;
+//     });
 
-    const boilerplate = `
-    <div class="modal-wrapper ${
-		fatal ? 'fatal ' : ''
-	} flex flex-align-center flex-justify-center full-width max-full-viewport-height">
-        <form class="modal card p-1 font-inter flex-align-center flex flex-justify-center flex-column">
-            <h1 class="p-1">${title}</h1>
-            ${fieldHTML}
-            <button type="submit" class="round-4 p-1 m-1 block input-field modal-complete">Continue</button>
-        </form>
-    </div>
-    `;
-    const modal = document.createElement('div');
-    modal.innerHTML = boilerplate;
-    let promise = Promise;
-    document.body.appendChild(modal);
-    document.querySelector('.modal').addEventListener('submit', e => {
-        e.preventDefault();
-        document.querySelectorAll('.modalChildItem').forEach(element => {
-            const elementId = element.dataset.mid;
-            output[element.placeholder.replace(' ', '_').trim()] = element.value;
-        });
-        modal.remove();
-        cb(output);
-    });
-}
-export function advancedModal(title, fields, cb) {
-	if (!fields) return;
-	let fieldHTML = '';
-	let iteration = 0;
-	const output = {};
-	fields.forEach(element => {
-		output[element.text.replace(' ', '_').trim()] = {
-			id: `modalItem-${iteration}`,
-			name: '',
-		};
-		fieldHTML += `<${element.tag} data-mid="modalItem-${iteration}" ${
-			element.tag == 'input'
-				? `placeholder="${element.text}"`
-				: element.htmlData || ''
-		} class="${element.class || ''} ${
-			element.tag == 'input' || 'textarea' ? '.modalSubmittableChildItem' : 'modalChildItem'
-		} p-1 m-0 no-outline dark round-3 ${
-			element.tag == 'input' ? 'input-field' : ''
-		}">${element.textIsContent ? element.text : ''}${
-			element.closing ? `</${element.tag}>` : ''
-		}`;
-		iteration++;
-	});
-
-	const boilerplate = `
-    <div class="modal-wrapper flex flex-align-center flex-justify-center full-width max-full-viewport-height">
-        <form class="modal card p-1 font-inter flex-align-center flex flex-justify-center flex-column">
-            <h1 class="p-1">${title}</h1>
-            ${fieldHTML}
-            <button type="submit" class="round-4 p-1 m-1 block input-field modal-complete">Continue</button>
-        </form>
-    </div>
-    `;
-	const modal = document.createElement('div');
-	modal.innerHTML = boilerplate;
-	let promise = Promise;
-	document.body.appendChild(modal);
-	document.querySelector('.modal').addEventListener('submit', e => {
-		e.preventDefault();
-		document.querySelectorAll('.modalSubmittableChildItem').forEach(element => {
-			const elementId = element.dataset.mid;
-			output[element.placeholder.replace(' ', '_').trim()] =
-				element.value;
-		});
-		modal.remove();
-		cb(output);
-	});
-}
+//     const boilerplate = `
+//     <div class="modal-wrapper ${
+// 		fatal ? 'fatal ' : ''
+// 	} flex flex-align-center flex-justify-center full-width max-full-viewport-height">
+//         <form class="modal card p-1 font-inter flex-align-center flex flex-justify-center flex-column">
+//             <h1 class="p-1">${title}</h1>
+//             ${fieldHTML}
+//             <button type="submit" class="round-4 p-1 m-1 block input-field modal-complete">Continue</button>
+//         </form>
+//     </div>
+//     `;
+//     const modal = document.createElement('div');
+//     modal.innerHTML = boilerplate;
+//     let promise = Promise;
+//     document.body.appendChild(modal);
+//     document.querySelector('.modal').addEventListener('submit', e => {
+//         e.preventDefault();
+//         document.querySelectorAll('.modalChildItem').forEach(element => {
+//             const elementId = element.dataset.mid;
+//             output[element.placeholder.replace(' ', '_').trim()] = element.value;
+//         });
+//         modal.remove();
+//         cb(output);
+//     });
+// }
 
 function withCredentials (user)
 {
+    document
+        .querySelector('#page_loading')
+        .classList.add('opacity-zero');
     console.log(user);
     getFunnel(user.user.uid, data => {
             // Insert user name onto dashboard
@@ -279,16 +285,65 @@ function withCredentials (user)
         e.preventDefault();
 		const code = document.querySelector('.seccode');
 		if (!code.value) return;
-		checkIfCodeIsValid(code.value, eventData => {
-			addToFunnel(user.user.uid, 'event', [eventData.code]);
-            msg('Access code added!', 'success');
-            redir('page_dashboard');
-		}, () => msg('Not a valid Access Code!', 'error'));
+		getCodePublicisedData(
+			code.value,
+			eventData => {
+				addToFunnel(user.user.uid, 'event', [eventData.code]);
+				msg('Access code added!', 'success');
+				redir('page_dashboard');
+				enableFeatures(user);
+				addEventToApp(eventData.code, eventData.name);
+			},
+			() => msg('Not a valid Access Code!', 'error')
+		);
 	});
+
+    enableFeatures(user);
+}
+function enableFeatures(user) {
+    getFunnel(user.user.uid, data => {
+        console.log(data.event.length);
+        if (data.event.length > 0) {
+            console.log(data.event);
+            document.querySelector('.event-on').classList.remove('disabled');
+        }
+    })
 }
 
-
-function AutoInit() {
+function usageInfo () {
+    modal('We use analytics technologies.', [
+		{
+			tag: 'p',
+			text: 'We use this to better understand how to improve our product. Your data will remain private at no cost.',
+			class: 'bold block card text-c no-border p-0 full-width',
+			closing: true,
+			textIsContent: true,
+		},
+		{
+			tag: 'p',
+            styling: 'mt-1',
+			text: 'If you have any concerns, please <a href="#page_contact">contact us</a> and we will respond to your problem.',
+			closing: true,
+			textIsContent: true,
+		},
+	],() => {}, false, [
+        {
+            styling: 'p-1 round-4',
+            onclick: "document.querySelector('.modal-wrapper').remove();",
+            content: 'I understand & consent'
+        }
+    ])
+    // `
+    //     <div class="analytics-tech-usage-info z100 p-2 m-1 topleft-abs round-4 card">
+    //         <h2>We use analytics technologies.</h2>
+    //         <p>We use this to better understand how to improve our product. Your data will remain private at no cost.</p>
+    //         <p>If you have any concerns, please <a href="#page_contact">contact us</a> and we will respond to your problem.</p>
+    //         <br>
+    //         <button class="p-1 round-4 full-width">I understand</button>
+    //     </div>
+    // `;
+}
+function AutoInit(elseCB) {
     // Auto signin user
 	const userInfo = JSON.parse(localStorage.getItem('user'));
 	if (userInfo) {
@@ -298,15 +353,46 @@ function AutoInit() {
 			err => {
 				msg('Auto Sign-in failed.', 'error');
 				console.error(err);
-				redir('page_signin');
+                finishSplash(() => {
+                    redir('page_signin');
+                    if (sessionStorage.getItem('reloadpageon')) {
+                        setTimeout(() => {
+                            redir(sessionStorage.getItem('reloadpageon'));
+                        }, 2000);
+                    }
+                })
 			},
 			userCredentials => {
-				msg('Auto Sign-in successful!', 'success');
-                redir('page_dashboard')
-				withCredentials(userCredentials);
+                msg('Auto Sign-in successful!', 'success');
+                finishSplash(() => {
+                    // console.log(requestedPage);
+                    redir('page_dashboard')
+                    if (sessionStorage.getItem('reloadpageon')) {
+                        setTimeout(() => {
+                            redir(sessionStorage.getItem('reloadpageon').replace('#', ''));
+                        }, 2000);
+                    }
+                    // if (
+					// 	requestedPage != '' ||
+					// 	requestedPage != '#page_loading' ||
+					// 	requestedPage != '#page_splash' ||
+					// 	requestedPage != '#page_signed_out'
+					// ) {
+                    //     redir(requestedPage.replace('#', ''));
+                    //     console.log('sd')
+                    // }
+                    // else {
+                    //     console.log('sd')
+                    // }
+						// redir(requestedPage);
+                    withCredentials(userCredentials);
+                })
+                // closeLoading();
 			}
 		);
-	}
+	} else {
+        elseCB();
+    }
 
 }
 
@@ -315,17 +401,34 @@ function onSplash() {
 	document.querySelector('body').classList.add('no-overflow');
 }
 function finishSplash(after) {
-    document.querySelector('.splash-icon').classList.add('up-out');
-    document.querySelector('.adva-alt-splash').classList.add('down-out');
-    document.querySelector('#page_splash').classList.add('opacity-zero');
-    document.querySelector('#page_loading').classList.add('opacity-zero');
+    let sessionWait = splashWaitTime;
+    if(sessionStorage.getItem('session')) {
+        sessionWait = 1;
+    }
     setTimeout(() => {
-        document.querySelector('.topbar').classList.remove('hidden');
-        document.querySelector('body').classList.remove('no-overflow');
-        after();
-    },200);
+		document.querySelector('.splash-icon').classList.add('up-out');
+		document.querySelector('.adva-alt-splash').classList.add('down-out');
+		document.querySelector('#page_splash').classList.add('opacity-zero');
+		document.querySelector('#page_loading').classList.add('opacity-zero');
+		setTimeout(() => {
+			document.querySelector('.topbar').classList.remove('hidden');
+			document.querySelector('body').classList.remove('no-overflow');
+			after();
+		}, 200);
+	}, sessionWait);
 }
 
 function lerpColor() {
 
+}
+
+export function addEventToApp(code) {
+    localStorage.setItem('eventTarget', code);
+    
+    document.querySelector('.signed-up-events').innerHTML += `
+    <button class="event-item dark card no-border current round-5 mb-1 p-1 block full-width">
+        <h5 class="event-code slightly-grey text-l fetching">${code}</h5>
+        <span class="event-name fetching">${eventName}</span>
+    </button>
+    `;
 }
