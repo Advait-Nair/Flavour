@@ -9,20 +9,20 @@ import {
     onAuthStateChanged,
     sendEmailVerification
 } from 'https://www.gstatic.com/firebasejs/9.9.4/firebase-auth.js';
-import {modal, closing, textIsContent} from './UI.js';
+import { modal, closing, textIsContent, sendUINotification } from './UI.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: 'AIzaSyCrum9tShfSEgaOYwUqDxkXORA9qk0wGvQ',
+	apiKey: 'AIzaSyCrum9tShfSEgaOYwUqDxkXORA9qk0wGvQ',
 	authDomain: 'adva-coordinata.firebaseapp.com',
 	projectId: 'adva-coordinata',
 	storageBucket: 'adva-coordinata.appspot.com',
 	messagingSenderId: '887381293602',
-	appId: '1:887381293602:web:d09e34e9970c3b634ae87b',
-	measurementId: 'G-XSSF0J6J13',
+	appId: '1:887381293602:web:d78e4cca9caa0f304ae87b',
+	measurementId: 'G-54MYCJN5F7',
 };
 
 import {
@@ -30,11 +30,12 @@ import {
 	collection,
 	addDoc,
     doc,
+    updateDoc,
 	getDocs,
     getDoc,
     setDoc,
 } from 'https://www.gstatic.com/firebasejs/9.9.4/firebase-firestore.js';
-import { msg } from './main.js';
+import { loading, msg } from './main.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -84,10 +85,62 @@ export function createUser(fname, lname, email, password, errorFunc, successFunc
 					msg(translateFirebaseError(err));
 				}
 			);
-            successFunc() || undefined;
+            successFunc(userCredential) || undefined;
         })
         .catch(err => {console.error(err.code, err.message); errorFunc(err);});
 }
+
+export function AskForName(userCredential, funnelExists) {
+    console.warn('function AskForName [export from firebase.js] is disabled.');
+    sendUINotification('Unhealthy Internet Connection', 'COORDINATA', 'We can\'t seem to fetch details about your user at this moment. This is normally because your internet connection isn\'t that good.','More Info', 'Most likely that the server has responded with most likely poor internet connection problem that will be resolved in time. If this does not resolve, and parts of the application seem incomplete or broken, please contact us as this often is not just due to a poor internet connection.');
+    return;
+    modal(
+		'What is your name?',
+		[
+			{
+				tag: 'p',
+				text: 'We need this as you currently do not have a name associated with your account.',
+				class: 'bold block card text-c no-border p-0 full-width',
+				closing,
+				textIsContent,
+			},
+			{ tag: 'input', text: 'First Name', class: 'm-1' },
+			{ tag: 'input', text: 'Last Name', class: 'm-1' },
+		],
+		data => {
+			console.log(data, 'df');
+            if(data.First_Name.trim() == '' && data.Last_Name.trim() == ''){ window.msg('Fill all fields!', 'error'); return;}
+			loading();
+            if(!funnelExists){
+                msg('Creating...')
+                createUserDataFunnel(
+                    userCredential.user,
+                    data.First_Name,
+                    data.Last_Name
+                ).then(() => {
+                    location.reload();
+                }).catch(err => {
+                    msg(translateFirebaseError(err));
+                    
+                });
+            } else {
+                updateFunnel(userCredential.user.uid, {
+					firstName: data.First_Name,
+					lastName: data.Last_Name,
+				})
+                .then(() => {
+                    location.reload();
+                })
+                .catch(err => {
+                    msg(translateFirebaseError(err));
+                });
+            }
+
+		},
+		false
+	);
+}
+
 export function signInUser(email, password, errorFunc, successFunc) {
     signInWithEmailAndPassword(auth, email, password)
     .then(userCredential => {
@@ -95,29 +148,35 @@ export function signInUser(email, password, errorFunc, successFunc) {
         DoesUserAlreadyHaveFunnel(userCredential.user.uid, () => {
 			// modal('What is your name?', ['First Name', 'Last Name'], data => {
 			// });
-			modal(
-				'What is your name?',
-				[
-					{
-						tag: 'p',
-						text: 'We need this as you currently do not have a name associated with your account.',
-						class: 'bold block card text-c no-border p-0 full-width',
-						closing,
-						textIsContent,
-					},
-					{ tag: 'input', text: 'First Name', class: 'm-1' },
-					{ tag: 'input', text: 'Last Name', class: 'm-1' },
-				],
-				data => {
-					// console.log(data);
-                    msg('Please wait...', 'success');
-                    createUserDataFunnel(userCredential.user, data.First_Name, data.Last_Name).catch(err => {
-                        msg(translateFirebaseError(err));
-                    });
-				},
-				false
-			);
-		})
+			// modal(
+			// 	'What is your name?',
+			// 	[
+			// 		{
+			// 			tag: 'p',
+			// 			text: 'We need this as you currently do not have a name associated with your account.',
+			// 			class: 'bold block card text-c no-border p-0 full-width',
+			// 			closing,
+			// 			textIsContent,
+			// 		},
+			// 		{ tag: 'input', text: 'First Name', class: 'm-1' },
+			// 		{ tag: 'input', text: 'Last Name', class: 'm-1' },
+			// 	],
+			// 	data => {
+			// 		// console.log(data);
+            //         loading();
+            //         createUserDataFunnel(userCredential.user, data.First_Name, data.Last_Name).catch(err => {
+            //             msg(translateFirebaseError(err));
+            //         });
+			// 	},
+			// 	false
+			// );
+            AskForName(userCredential, false);
+		});
+        getFunnel(userCredential.user.uid, data => {
+            if(data.firstName.trim() === '' || data.lastName.trim() === '') {
+                AskForName(userCredential, true);
+            }
+        }).catch(err => msg('Seems you don\'t have a place to store your data. We making one for you.'))
     })
     .catch(err => {
         console.error(err.code, err.message);
@@ -131,6 +190,7 @@ export function signOutUser(errorFunc, successFunc) {
 			redir('page_signed_out');
 			setTimeout(() => {
 				redir('page_start');
+                location.reload();
 			}, 4000);
 		})
 		.catch(err => {
@@ -172,6 +232,9 @@ export async function addToFunnel (uid, itemKey, itemObject) {
     const docRef = await setDoc(doc(db, 'users', uid), {
 		[itemKey]:itemObject
 	}, {merge: true});
+};
+export async function updateFunnel (uid, item) {
+    await updateDoc(doc(db, 'users', uid), item);
 };
 
 // export async function checkIfCodeIsValid (code, handle, error) {
@@ -279,6 +342,7 @@ export const firebaseErrors = {
     'auth/wrong-password':	'Password is wrong.',
     'auth/email-already-in-use':	'This email is already registered!',
     'auth/too-many-requests':	'A lot of requests have been sent recently to this ID, and so access has been temporarily disabled. Please contact us for more info.',
+    'auth/network-request-failed': 'We can\'t seem to connect to the servers right now. Please check your connection & try again.'
 };
 export function translateFirebaseError (errMsg) {
     const errors = Object.keys(firebaseErrors);

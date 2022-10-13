@@ -107,7 +107,7 @@ export function modal(title, fields, cb, cancellable, btns) {
 
 
 // Functions
-import { signOutUser } from './firebase.js';
+import { signOutUser, updateFunnel } from './firebase.js';
 import { msg } from './main.js';
 export function executeFunctionInitiations() {
     const closing = true;
@@ -142,9 +142,31 @@ export function executeFunctionInitiations() {
                 { tag: 'input', text: 'Last Name', class: 'm-1' },
             ],
             data => {
-                console.log(data);
+                try {
+                    if(data.First_Name.trim() !== '' && data.Last_Name.trim() !== '') {
+                    updateFunnel(window.uid, {
+                        firstName: data.First_Name,
+                        lastName: data.Last_Name,
+                    })
+                    msg('Changes saved. Reloading to apply effects...');
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000)
+                    } else {
+                        msg('You can\'t leave your name blank!','error')
+                    }
+                } catch {
+                    console.error(err);
+                    msg('Something has gone wrong.');
+                }
             }
-        , true);
+        , true, [
+            {
+                styling: 'go-btn',
+                onclick: '',
+                content: 'Save'
+            }
+        ]);
     };
 }
 
@@ -153,4 +175,127 @@ export const textIsContent = true
 export function closeModal () {
     enableOverflow();
 	document.querySelector('.modal-wrapper').remove();
+}
+
+export function requestForNotification (title, message) {
+    Notification.requestPermission().then(result => {
+        // if(!localStorage.getItem('notifications')) {
+        //     sendNotification(title, msg);
+        //     localStorage.setItem('notifications', JSON.stringify(result));
+        // }
+        if (result !== 'granted' && !localStorage.getItem('notificationsDeniedMoreThanOnce')) {
+			setTimeout(() => {
+                window.msg(
+                    "Notifications permission seems to have been denied. Coordinata can't send you updates on your events!",
+                    'error'
+                );
+                localStorage.setItem('notificationsDeniedMoreThanOnce', '+')
+            }, 9000);
+		} else if(result === 'granted') {
+        }
+    });
+}
+export function sendSystemNotification(title, type, msg, moreTitle, more) {
+	const img = './coordinata.png';
+	const notification = new Notification(title, {
+		body: `${type || 'cd'} | ${msg || '1 New Notification'}. ${moreTitle || ''}${more || moreTitle ? ' - ' : ''}${more || ''}`,
+		icon: img,
+	});
+}
+
+export function sendNotification(title, type, msg, moreTitle, more) {
+	if (document.hasFocus()) {
+		sendUINotification(title, type ? type.toUpperCase() : 'MESSAGE', msg, moreTitle, more);
+	} else {
+        sendSystemNotification(title, type ? type.toUpperCase() : 'MESSAGE', msg, moreTitle, more);
+        sendUINotification(title, type ? type.toUpperCase() : 'MESSAGE', msg, moreTitle, more);
+    }
+}
+
+export function sendUINotification (title, type, msg, moreTitle, more) {
+    const notificationBar = document.querySelector('.notification-bar');
+    const notificationBarWrapper = document.querySelector('.notification-bar-wrapper');
+
+    notificationBarWrapper.classList.remove('phase-notification-out');
+    const notificationTitle = document.querySelector('.notification-title');
+    const notificationContent = document.querySelector('.notification-msg');
+    const notificationType = document.querySelector('.notification-type');
+    const notificationMoreTitle = document.querySelector('.notification-moreTitle');
+    const notificationMore = document.querySelector('.notification-more');
+    notificationTitle.textContent = title || 'cd';
+    notificationContent.textContent = msg || '1 New Notification';
+    notificationType.textContent = type || 'MESSAGE';
+    notificationMoreTitle.textContent = moreTitle || '';
+    notificationMore.textContent = more || '';
+
+    notificationBar.addEventListener('click', e => {
+        // isFullView = true;
+        if(e.target.classList.contains('cancel-wrapper')) return;
+        notificationBar.classList.toggle('bring-notification-to-full-scale');
+        document.querySelector('.notification-bar-wrapper').classList.toggle('full-imp');
+        document.querySelector('.notification-bar .extra-content').classList.toggle('hidden');
+        // tick = 0;
+        // IsHolding = true;
+        })
+    // const el = document.createElement('div')
+    // document.body.appendChild(el);
+    // el.outerHTML = HTML;
+
+}
+
+requestForNotification('Hello! Notifications are now on.', 'Now you can keep up to date with your events!')
+
+window.requestForNotification = requestForNotification;
+window.sendSystemNotification = sendSystemNotification;
+window.sendUINotification = sendUINotification;
+window.sendNotification = sendNotification;
+
+
+
+
+
+export class QR {
+	constructor(apiKey) {
+		this.key = apiKey;
+	}
+
+	createParameters(text, parameterArray) {
+		// Get the necessary parameters and put into into basicParameters
+		// Putting the API key and URL content into basicParameters
+		let basicParameters = `?cht=qr&chl=${text}`;
+		this.text = text;
+
+		// Format any parameters that are passed in
+		let parameterString = basicParameters;
+		parameterArray.forEach(param => {
+			// This will be used to format parameter values
+			let parameterValue = param.value;
+
+			// If a color gets passed in HEX form, replace it with URL encoding
+			if (param.value.includes('#'))
+				parameterValue = param.value.replace('#', '%23');
+
+			// Assign the formatted parameter data to parameterString
+			parameterString += `
+			&${param.name}=${parameterValue}
+			`;
+		});
+
+		// Return the formatted parameter string
+		return parameterString;
+	}
+
+	createImage(parameterFunctionData) {
+		// Create the URL
+		// let url = `https://api.qr-code-generator.com/v1/create${parameterFunctionData}`;
+		let url = `https://chart.googleapis.com/chart${parameterFunctionData}`;
+
+		// Create the image
+		let image = new Image();
+        image.classList.add('qr-code');
+		image.src = url;
+
+		// Return the image
+		return image;
+	}
 }

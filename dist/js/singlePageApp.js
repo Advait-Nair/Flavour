@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', e => {
 		hash == '#page_dashboard' ||
 		hash == '#page_start' ||
 		hash == '#page_loading' ||
+		hash == '#page_offline' ||
 		hash == '#page_splash'
 	) {
 		document.querySelector('.back-btn').classList.add('side-hidden');
@@ -95,10 +96,46 @@ window.onhashchange = () => {
 	redir(hash.replace('#', '') || `${base.page_prefix}${base.homepage}`);
 	showTopbar();
 	console.log(location.hash)
-	if (hash == '#page_dashboard' || hash == '#page_start') {
+	if (
+		hash == '#page_dashboard' ||
+		hash == '#page_start' ||
+		hash == '#page_loading' ||
+		hash == '#page_offline' ||
+		hash == '#page_splash'
+	) {
 		document.querySelector('.back-btn').classList.add('side-hidden');
 	} else {
 		document.querySelector('.back-btn').classList.remove('side-hidden');
+	}
+	function redirectDefault() {
+		if (localStorage.getItem('user')) {
+			redir('page_dashboard');
+		} else {
+			redir('page_start');
+		}
+	}
+	if (hash == '#page_loading' && window.loadingComplete) {
+		redirectDefault();
+	} else if (localStorage.getItem('user') && hash == '#page_signed_out') {
+		redir('page_dashboard');
+	} else if (hash == '#page_splash' && window.loadingComplete) {
+		redirectDefault();
+	} else if (hash == '#page_start' && localStorage.getItem('user')) {
+		redir('page_dashboard');
+	} else if (hash == '#page_dashboard' && !localStorage.getItem('user')) {
+		redir('page_start');
+	} else if (hash == '#page_creation' && localStorage.getItem('user')) {
+		redir('page_dashboard');
+	} else if (hash == '#page_signin' && localStorage.getItem('user')) {
+		redir('page_dashboard');
+	} else if (hash == '#page_check_in' && localStorage.getItem('user')) {
+		document.body.classList.add('brick');
+		document.body.classList.add('black');
+	}
+
+	if (hash != '#page_check_in') {
+	document.body.classList.remove('black');
+		document.body.classList.remove('brick');
 	}
 }
 
@@ -207,15 +244,16 @@ function goThroughAllPages(cb) {
 		cb(page);
 	});
 }
-function redir(pageidRaw) {
+function redir(pageIdRaw) {
 	let pageid;
 	let jumpto;
 	// let isIdPartOfPage = false;
-	if (!pageidRaw.includes(base.page_prefix)) {
-		pageid = ifUnrecognisedReturnPage(pageidRaw);
-		jumpto = pageidRaw;
+	const pageIdFormatted = pageIdRaw.replace('#', '')
+	if (!pageIdFormatted.includes(base.page_prefix)) {
+		pageid = ifUnrecognisedReturnPage(pageIdFormatted);
+		jumpto = pageIdFormatted;
 	} else {
-		pageid = pageidRaw;
+		pageid = pageIdFormatted;
 	}
 
 	const target = document.querySelector('#' + pageid);

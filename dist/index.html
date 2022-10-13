@@ -156,6 +156,46 @@
 </head>
 <body>
     <Application-Body>
+    <div style="width: 100%" class="pop-transition error-container hidden top-fixed mt-1 flex flex-align-center flex-justify-center">
+        <!-- <span class="text-c greyed-text font-inter s-caption err-caption">
+            
+        </span> -->
+        <div onclick="this.parentElement.classList.add('phase-notification-out');setTimeout(() => {this.parentElement.classList.remove('phase-notification-out');},2000)" class="text-c error-pop py-quarter pop-transition"></div>
+    </div>
+    <div class="notification-bar-wrapper phase-notification-out container flex flex-align-center flex-justify-center full-width">
+        <div class="notification-bar dark p-1 z100">
+            <div class="flex flex-align-center flex-justify-center cancel-wrapper">
+                <div class="cancel" onclick="this.parentElement.parentElement.parentElement.classList.add('phase-notification-out')">
+                    <!-- ;setTimeout(()=> {this.parentElement.parentElement.parentElement.remove()},6000) -->
+                    <div class="line-45"></div>
+                    <div class="line-135"></div>
+                </div>
+            </div>
+            <div class="notification-content pr-3">
+                <h4 class="notification-type s-caption greyed-text p-key">notification-type</h4>
+                <h2 class="notification-title p-key">notification-title</h2>
+                <h3 class="notification-msg p-key">notification-msg</h3>
+                <div class="extra-content hidden pt-2">
+                    <h2 class="notification-moreTitle p-key bold">notification-moreTitle</h2>
+                    <h4 class="p-key notification-more">notification-more</h4>
+                </div>
+            </div>
+            <div class="bottom-panel">
+                <div class="handle"></div>
+                <!-- <script>
+                    document.querySelector('.notification-bar').addEventListener('click', e => {
+                        // isFullView = true;
+                        if(e.target.classList.contains('cancel-wrapper')) return;
+                        document.querySelector('.notification-bar').classList.toggle('bring-notification-to-full-scale');
+                        document.querySelector('.notification-bar-wrapper').classList.toggle('full-imp');
+                        document.querySelector('.notification-bar .extra-content').classList.toggle('hidden');
+                        // tick = 0;
+                        // IsHolding = true;
+                    })
+                </script> -->
+            </div>
+        </div>
+    </div>
     <div class="DEBUG-TOOLS">
     </div>
     <nav class="topbar">
@@ -165,23 +205,9 @@
                 <div class="log-wrapper">
                     <div class="s-caption p-key">LOG MESSAGES</div>
                     <div class="round-4 dark p-key log">
-                        <!-- <div class="log-info card p-key">
-                            <div class="s-caption">LOG</div>
-                            <p class="content p-key">All Rounds successfully completed.</p>
-                        </div>
-                        <div class="log-warn card p-key">
-                            <div class="s-caption">WARN</div>
-                            <p class="content p-key">All Rounds successfully completed.</p>
-                        </div>
-                        <div class="log-error card p-key">
-                            <div class="s-caption">ERROR</div>
-                            <p class="content p-key">All Rounds successfully completed.</p>
-                        </div> -->
                     </div>
                 </div>
                 <div class="right flex flex-align-center flex-column flex-justify-center">
-                    <!-- <h2 class="text-r">DEBUG</h2>
-                    <p class="text-r">CD Debug Log - Perform debugging through mobile console. Not to be used unless you know what you are doing!</p> -->
                 </div>
             </div>
             <form class="evaluation-form">
@@ -191,22 +217,24 @@
                 <button onclick="document.designMode == 'on' ? document.designMode = 'off' : document.designMode = 'on'" class="round-4 p-key dark">Design Mode</button>
                 <button onclick="window.pagePrompt()" class="round-4 p-key dark">Pages</button>
                 <button onclick="window.LS()" class="round-4 p-key dark">Storage</button>
+                <button onclick="window.location.reload()" class="round-4 p-key dark">Reload</button>
             </div>
         </div>
         <!-- <span class="greyed-text glass round-4">v0.1</span> -->
-        <div class="p-half version-info flex flex-align-center flex-justify-center flex-column">
+        <div class="p-half back-btn-wrapper flex flex-align-center flex-justify-center flex-column">
             <a style="color:#5f5de9 !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();"><div class="flex flex-align-center flex-justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 </svg> <span class="text-c">Return &nbsp;</span>
             </div></a>
         </div>
-        <div class="p-1 error-container glass round-4 flex flex-column">
+        <!-- <div class="p-1 glass round-4 flex flex-column">
             <span class="greyed-text text-r font-inter s-caption err-caption">
                 ACCESSIBILITY
             </span>
             <span class="error-pop py-quarter">Use <span class="card p-key">Tab</span> to navigate</span>
-        </div>
+        </div> -->
+        <div class="empty"></div>
     </nav>
     <div id="page_vconsole" class="container p-2 pt-4 page">
         <h1 class="greyed-text font-inter">View Console Log</h1>
@@ -215,28 +243,20 @@
             <div class="greyed-text font-mono">No logs to be viewed here. Select a log from the console.</div>
         </div>
     </div>
-    <div id="page_join" class="container p-0 page">
-        <form class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column joinEvent">
-            <div class="mt-2 flex flex-align-center flex-justify-center flex-column">
-                <h4 class="text-l block half-width">Access Code</h4>
-        
-                <input placeholder="000ABC"  class="seccode p-1 mt-1 mb-1 no-outline dark round-3 font-3 text-c half-width" type="text">
-            </div>
-            <button type="submit" class="round-4 p-1 m-1 third-width">Join Event!</button>
-            <div class="greyed-text pt-4 half-width text-c">
-                Access codes are special 6 character codes that are given out by event organisers so that you can join their events. To get an access code, simply ask the event organiser through some mean of communication such as a website. In short, these 6 character codes are used to access an event.
-            </div>
-        </form>
-    </div>
     <!-- Signing up or in? -->
     <div id="page_start" class="container p-0 page">
-        <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height">
-            <button onclick="redir('page_creation')" class="to-sign-up p-1 m-1 dark round-4 square text-c">
-                I am new
-            </button>
-            <button onclick="redir('page_signin')" class="to-sign-in p-1 third-height m-1 dark round-4 square text-c">
-                I am signing in
-            </button>
+        <div class="wrapper flex flex-align-center flex-justify-center flex-column max-full-viewport-height">
+            <h1 class="pb-3">Coordinator Login</h1>
+            <div class="flex flex-align-center flex-justify-center full-width">
+                <button onclick="redir('page_creation')" class="to-sign-up p-1 m-1 dark round-4 square text-c">
+                    I am new
+                </button>
+                <button onclick="redir('page_signin')" class="to-sign-in p-1 third-height m-1 dark round-4 square text-c">
+                    I am signing in
+                </button>
+            </div>
+            <a href="https://coordinata.netlify.app" class="pt-2">I am not a coordinator</a>
+            <a href="mailto:main.adva@gmail.com" class="pt-2">Contact Us</a>
         </div>
     </div>
 
@@ -286,54 +306,15 @@
         </div>
     </div>
 
-    <div id="page_signed_up_events" class="container page">
-        <h1 class="text-c p-1 m-1">Your Events</h1>
-        <div class="mt-1 m-1 p-1 pb-0 p-half dark round-5 flex flex-align-center flex-justify-center">
-            <div class="dark round-5 signed-up-events">
-                <div class="greyed-text mb-1">
-                    You haven't registered to an event.
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- Dashboard -->
     <div id="page_dashboard" class="container page">
-        <h1 class="text-c p-1 m-1">Dashboard</h1>
-        <h4 class="text-c" ><span class="greyed-text"> Logged in as </span><span class="dash-fname"></span> <span class="dash-lname"></span></h4>
-        <h5 class="dash-email greyed-text text-c fetching"></h5>
-        <div class="your-events dark no-border round-5 p-1 mt-1 mb-1">
-            <div class="p-1 mt-1 flex flex-align-center flex flex-justify-center">
-                <div class="left">
-                    <h3 class="pl-1 pr-1 greyed-text" >Your events</h3>
-                    <span class="greyed-text text-c full-width font-inter s-caption p-1">CLICK TO SWITCH</span>
-                </div>
-                <div class="right">
-                    <button class="round-5 p-1" onclick="redir('page_signed_up_events')">Switch</button>
-                </div>
-            </div>
-            <div class="info p-1 m-1 flex flex-align-center flex-justify-center dark round-4">
-                <div class="center current-event">
-                    <button class="event-item dark card no-border round-5 p-1">
-                        <h5 class="event-code slightly-grey text-l">Select or register to an event</h5>
-                        <span class="event-name fetching">No current selected event</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="grid-2 grid event-on disabled">
-            <button class="p-1 dark round-4 m-1 inline">QR Code</button>
-            <button class="p-1 dark round-4 m-1 inline">Your Status</button>
-            <button class="p-1 dark round-4 m-1 inline">Team</button>
-            <button class="p-1 dark round-4 m-1 inline">Event Information</button>
-        </div>
-        <div class="event-off p-1 round-4">
-            <button class="p-1 dark round-4 full-width" onclick="redir('page_join')">Register to an event</button>
-        </div>
+        <h1 class="text-c p-1 pb-0 m-1 dash-title">Dashboard</h1>
         <div class="flex-align-center flex flex-justify-center">
             <button onclick="window.logOut();" class="p-1 dark round-4 m-1 inline recte">Log Out of ID</button>
             <button onclick="window.settings();" class="p-1 dark round-4 m-1 inline dark">Settings</button>
         </div>
-        
+    </div>
     </div>
     
 
@@ -344,7 +325,7 @@
         <h1 class="p-1 bold">Terms and Conditions</h1>
         <section class="p-1 dark round-4">
             <h1 class="bold">Our Contact Information</h1>
-            <p class="p-1">Email us: <a href="mailto:main.adva@gmail.com">main.adva@gmail.com</a></p>
+            <p class="p-1">Email us: <a href="mailto:main.adva@gmail.com">main.adva<!--GeTlOsTyOuIdIOtS-->@gmail.com</a></p>
 
         </section>
         <section class="p-1 dark round-4 mt-1 mb-1">
@@ -428,7 +409,7 @@
             <div class="main-splash container flex flex-align-center max-full-viewport-height full-width flex-column transition">
                 <div class="empty"></div>
                 <img class="splash-icon transition" src="./coordinata_mono.png" alt="cd">
-                <div class="pb-3 greyed-text text-c block font-inter adva-alt-splash transition">An <img class="adva-logo-mini" src="./gslogo.png" alt="Adva"> Product</div>
+                <div class="pb-5 greyed-text text-c block font-inter adva-alt-splash transition">An <img class="adva-logo-mini" src="./gslogo.png" alt="Adva"> Product</div>
             </div>
         </div>
     </div>
@@ -445,21 +426,20 @@
             </div>
         </div>
     </div>
-     <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_contact">
+    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_contact">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex generic-wrapper">
             <div class="main blend dark blend-off z-2 inline p-1 round-4 m-1">
                 <h1>Contact Us</h1>
                 <h3>Something is not working? Forgot your password? Or just want to suggest a feature?</h3>
-                <h4>Contact us at: <a href="mailto:main.adva@gmail.com">main.adva@gmail.com</a> </h4>
+                <h4>Contact us at: <a href="mailto:main.adva@gmail.com">main.adva<!--GeTlOsTyOuIdIOtS-->@gmail.com</a> </h4>
                 <button class="card no-border round-4 p-1 third-width mt-1" onclick="history.back();">Back</button>
             </div>
-            <!-- <div class="deco-wrapper generic-wrapper z--1">
-                <div class="deco">
-                    <h1 class="darked-text">coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata coordinata</h1>
-                </div>
-            </div> -->
         </div>
     </div>
+
+
+    <!-- ! Application Screens -->
+
     </Application-Body>
     <!-- <div class="footer full-width p-1 text-c">
         <img class="img-small round-4" src="assets/coordinata.png" alt="cd">
@@ -468,7 +448,7 @@
     </div> -->
     <script>
         document.addEventListener('DOMContentLoaded', e => {
-            document.querySelector('.theme-color').content = '#222';
+            document.querySelector('.theme-color').content = '#22222200';
         })
     </script>
 
