@@ -122,7 +122,7 @@ export function executeFunctionInitiations() {
                 msg('Logged out successfully!', 'success');
                 redir('page_signed_out');
                 setTimeout(() => {
-                    redir('page_start')
+                    // redir('page_start')
                 }, 4000);
             }
         );
@@ -251,51 +251,356 @@ window.sendUINotification = sendUINotification;
 window.sendNotification = sendNotification;
 
 
+export class UI {
+    constructor() {
+        this.initialiseTimePicker();
+    }
+
+    askForTime(handler) {
+        this.forceInputs();
+        document.querySelector('.time').classList.remove('from-bottom');
+        document.querySelector('.getTime').addEventListener('click', e => {
+            e.preventDefault();
+            const numberHr1 = document.querySelector(
+                '.time-picker-1 .number-hr'
+            ).value;
+            const numberMin1 = document.querySelector(
+                '.time-picker-1 .number-min'
+            ).value;
+
+            const numberHr2 = document.querySelector(
+                '.time-picker-2 .number-hr'
+            ).value;
+            const numberMin2 = document.querySelector(
+                '.time-picker-2 .number-min'
+            ).value;
+
+            const parsed = {
+                h1: parseInt(numberHr1.trim().replace('00', '0')),
+                h2: parseInt(numberHr2.trim().replace('00', '0')),
+                m1: parseInt(numberMin1.trim().replace('00', '0')),
+                m2: parseInt(numberMin2.trim().replace('00', '0'))
+
+            }
+
+            if((!parsed.h1 || !parsed.h2 || !parsed.m1 || !parsed.m2) && parsed.h1 != 0 && parsed.h2 != 0 && parsed.m1 != 0 && parsed.m2 != 0) {
+                msg('Invalid time', 'error');
+            } else if (
+				parsed.h1 > 24 ||
+				parsed.h2 > 24 ||
+				parsed.m1 > 60 ||
+				parsed.m2 > 60
+			) {
+                console.log(parsed)
+				msg('Invalid time', 'error');
+			} else if (
+				parsed.h1 == 24 ||
+				parsed.h2 == 24
+			) {
+				
+				msg('Please write 12am as 00:00, not 24:00', 'error');
+			} else {
+				handler({
+					from: parsed.h1 + parsed.m1 / 60,
+					to: parsed.h2 + parsed.m2 / 60,
+				});
+				document.querySelector('.time').classList.add('from-bottom');
+			}
+        });
+    }
+
+    // TODO make handler that returns decimal time & validify
+
+    initialiseTimePicker() {
+        const timePicker1 = document.querySelector('.time-picker-1');
+        const timePicker2 = document.querySelector('.time-picker-2');
+
+        const increaseHr1 = document.querySelector('.time-picker-1 .hr .increase');
+        const decreaseHr1 = document.querySelector('.time-picker-1 .hr .decrease');
+
+        const increaseMin1 = document.querySelector('.time-picker-1 .min .increase');
+        const decreaseMin1 = document.querySelector('.time-picker-1 .min .decrease');
+
+        const increaseHr2 = document.querySelector('.time-picker-2 .hr .increase');
+        const decreaseHr2 = document.querySelector('.time-picker-2 .hr .decrease');
+
+        const increaseMin2 = document.querySelector('.time-picker-2 .min .increase');
+        const decreaseMin2 = document.querySelector('.time-picker-2 .min .decrease');
 
 
+        const numberHr1 = document.querySelector('.time-picker-1 .number-hr');
+        const numberMin1 = document.querySelector('.time-picker-1 .number-min');
+        
+        const numberHr2 = document.querySelector('.time-picker-2 .number-hr');
+        const numberMin2 = document.querySelector('.time-picker-2 .number-min');
 
-export class QR {
-	constructor(apiKey) {
-		this.key = apiKey;
-	}
+        // Functionalise the incrementors and decrementors
+        increaseHr1.addEventListener('click', () => this.incrementInputValue(numberHr1));
+        decreaseHr1.addEventListener('click', () => this.decrementInputValue(numberHr1));
 
-	createParameters(text, parameterArray) {
-		// Get the necessary parameters and put into into basicParameters
-		// Putting the API key and URL content into basicParameters
-		let basicParameters = `?cht=qr&chl=${text}`;
-		this.text = text;
+        increaseMin1.addEventListener('click', () => this.incrementInputValue(numberMin1, true));
+        decreaseMin1.addEventListener('click', () => this.decrementInputValue(numberMin1, true));
 
-		// Format any parameters that are passed in
-		let parameterString = basicParameters;
-		parameterArray.forEach(param => {
-			// This will be used to format parameter values
-			let parameterValue = param.value;
+        increaseHr2.addEventListener('click', () => this.incrementInputValue(numberHr2));
+        decreaseHr2.addEventListener('click', () => this.decrementInputValue(numberHr2));
 
-			// If a color gets passed in HEX form, replace it with URL encoding
-			if (param.value.includes('#'))
-				parameterValue = param.value.replace('#', '%23');
+        increaseMin2.addEventListener('click', () => this.incrementInputValue(numberMin2, true));
+        decreaseMin2.addEventListener('click', () => this.decrementInputValue(numberMin2, true));
 
-			// Assign the formatted parameter data to parameterString
-			parameterString += `
-			&${param.name}=${parameterValue}
-			`;
-		});
-
-		// Return the formatted parameter string
-		return parameterString;
-	}
-
-	createImage(parameterFunctionData) {
-		// Create the URL
-		// let url = `https://api.qr-code-generator.com/v1/create${parameterFunctionData}`;
-		let url = `https://chart.googleapis.com/chart${parameterFunctionData}`;
-
-		// Create the image
-		let image = new Image();
-        image.classList.add('qr-code');
-		image.src = url;
-
-		// Return the image
-		return image;
-	}
+        // Create force focus inputs
+        this.forceInputs = () => {
+            numberHr1.focus();
+            numberHr1.addEventListener('keyup', e => {
+                this.moveToNextInput(numberHr1, numberMin1);
+            })
+            numberMin1.addEventListener('keyup', e => {
+                this.moveToNextInput(numberMin1, numberHr2);
+            })
+            numberHr2.addEventListener('keyup', e => {
+                this.moveToNextInput(numberHr2, numberMin2);
+            })
+            numberMin2.addEventListener('keyup', e => {
+                this.moveToNextInput(numberMin2, null);
+            })
+        }
+    }
+    incrementInputValue (el, min) {
+        let limit = min ? '60' : '23'
+        if(!el.value) {
+            el.value = '00'
+        }
+        if(el.value == limit){
+            el.value = '00';
+        } else
+        el.value = this.format(parseInt(el.value) + 1)
+    }
+    decrementInputValue (el, min) {
+        let limit = min ? '60' : '23'
+        if(!el.value) {
+            el.value = '00'
+        }
+        if(el.value == '00' || el.value == '0'){
+            el.value = limit;
+        } else
+        el.value = this.format(parseInt(el.value) - 1);
+    }
+    format(number) {
+        return number < 10 ? '0' + number : number;
+    }
+    moveToNextInput (currentInput, nextInput) {
+        console.log(currentInput, nextInput)
+        if(currentInput.value.length === 2 && nextInput)
+        nextInput.focus()
+    }
 }
+
+
+
+// Calendar
+
+export class Calendar {
+    constructor (element) {
+        this.targetElement = element;
+        this.events = [];
+    }
+
+    newRow(time, cols) {
+        const tr = document.createElement('tr')
+        const th = document.createElement('th')
+        const thTime = document.createElement('div')
+        thTime.textContent = `${time < 10 ? '0' + time : time}:00`;
+        th.classList.add('time-item');
+        thTime.classList.add('time-item-text');
+        th.appendChild(thTime);
+        tr.appendChild(th);
+        for (let i = 0; i < cols; i++) {
+            const td = document.createElement('td');
+            td.classList.add('col-'+i);
+            tr.appendChild(td);
+        }
+        return tr;
+    }
+
+    newCalendar(timeRange) {
+        const table = document.createElement('table');
+
+        // Responsiveness
+        let cols = 10;
+        // 1200=14,1000=10,700=8,500=6
+        console.log(window.innerWidth, 'sgsdgsdgsgdg')
+        if(window.innerWidth >= 1200) {
+            cols = 18;
+        }
+        if(window.innerWidth <= 1000) {
+            cols = 10;
+        }
+        if(window.innerWidth <= 700) {
+            cols = 8;
+        }
+        if(window.innerWidth <= 500) {
+            cols = 6;
+        }
+        console.log('asdasdasfasfasf', cols)
+
+        table.classList.add('vertical', 'full-width')
+        for (let i = 0; i < timeRange; i++) {
+            const tr = this.newRow(i, cols);
+            tr.classList.add('row-'+i);
+            table.appendChild(tr);
+        }
+        this.targetElement.appendChild(table);
+    }
+    newEvent(args) {
+        // Destructure
+        const { title, desc, start } = args;
+        let { length, end } = args;
+        const id = this.events.length || 0;
+
+        if(!length && end) {
+            length = end - start
+        } else if (!length & !end) {
+            console.error('Error creating new Event: no length or end argument provided.')
+        }
+
+        // Calculate positional values
+        const height = 3.4 * length;
+        const distFromTop = 3.4 * (start - Math.floor(start));
+
+        // Find row to start from
+        const row = document.querySelector(`.row-${Math.floor(start)}`);
+
+        let chosenCol = 0;
+        let colNotChosen = true;
+        Array.from(row.children).forEach((ch, index) => {
+            if(!ch.querySelector(`.col-${index-1} .event-bubble`) && colNotChosen && index !== 0 && index % 2 !== 0) {
+                chosenCol = index - 1;
+                colNotChosen = false;
+            }
+            console.log(index, Array.from(row.children).length);
+            if (index + 1 == Array.from(row.children).length && colNotChosen) {
+                msg('No more space!', 'error');
+            }
+        });
+        const rowToStartFrom = document.querySelector(
+			`.row-${Math.floor(start)} .col-${chosenCol}`
+		);
+
+        // Create the main event element
+        const element = document.createElement('div');
+        element.classList.add('event-bubble', 'transition-all', `event-bubble-${id}`);
+
+        // Create the event title element and insert the title into it
+        const elementTitle = document.createElement('event-title');
+        elementTitle.textContent = title;
+        // Append the event title to the main event element
+        element.appendChild(elementTitle);
+        
+
+        // Create the event more element and insert extra content into it
+        const elementMore = this.createElement('event-more');
+
+        // Add time element
+        console.log(start, start + length, length, '529')
+        elementMore.appendChild(this.createElement('event-time', this.getTimeRange(start, start + length)));
+
+        // Add desc element
+        elementMore.appendChild(this.createElement('event-desc', desc));
+
+        // Add more element
+        elementMore.appendChild(this.createElement('button', 'View', 'button'));
+
+
+        // Append the event element to the main event element
+        element.appendChild(elementMore);
+
+
+        // Append the event element to the row closest to the start position
+        rowToStartFrom.appendChild(element);
+
+        // Insert positional styling
+        element.style = `top: ${distFromTop}rem; height: ${height}rem`;
+
+        // Create the expanding content effect using event listeners
+        element.addEventListener('click', e => {
+            e.preventDefault();
+            if (!e.target.classList.contains('button')) {
+                element.querySelector('event-more').classList.toggle('largify');
+                element.classList.toggle('expand-event-bubble');
+            }
+        })
+
+        // Finally, append this event to the event object
+        this.events.push (
+            {
+                start,
+                length,
+                title,
+                desc,
+                end: end || start + length,
+                id: id
+            }
+        )
+        this.updateEvents();
+    }
+    convertFromDecimalToTimeString(time) {
+        let hr = Math.floor(time);
+        let min = time - Math.floor(time);
+        console.log(hr, min, time, '560');
+
+        if(hr === 24) {
+            hr = 0;
+        }
+        if(min === 60) {
+            min = 0;
+        }
+
+
+        let formatted = `${this.addZeroToNonDouble(hr)}:${this.addZeroToNonDouble(Math.round(min*60))}`
+        return formatted;
+    }
+    updateEvents () {
+        localStorage.setItem('storedCalendarEvents', JSON.stringify(this.events));
+    }
+    loadEvents () {
+        let storedEvents = localStorage.getItem('storedCalendarEvents')
+        // Exists or not?
+        if(!storedEvents) return;
+        // Parse
+        storedEvents = JSON.parse(storedEvents);
+        // Loop
+        storedEvents.forEach((event) => {
+            this.newEvent({
+                start: event.start,
+                length: event.length,
+                title: event.title,
+                desc: event.desc,
+            });
+        });
+
+    }
+    deleteEvent (eventId) {
+        if(!eventId) return;
+        this.events.map((v, i) => {
+            if(v.id !== eventId)
+                return v;
+        })
+        const eventBubble = document.querySelector('.'+'event-bubble-'+eventId)
+        if(eventBubble)
+        eventBubble.remove();
+    }
+    addZeroToNonDouble(n) {
+        return `${n < 10 ? '0'+ n : n}`;
+    }
+    createElement(tag, content, classes) {
+        const el = document.createElement(tag);
+        if(content)
+        el.innerHTML = content;
+        if(classes)
+        el.className = classes || '';
+        return el;
+    }
+    getTimeRange(start, end) {
+        return `${this.convertFromDecimalToTimeString(start)}-${this.convertFromDecimalToTimeString(end)}`
+    }
+}
+

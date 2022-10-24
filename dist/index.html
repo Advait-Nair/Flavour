@@ -196,11 +196,33 @@
             </div>
         </div>
     </div>
+
+    <div class="transition vnav dark tuck-vnav">
+        <button class="transition popout chevron-wrapper flex flex-align-center flex-justify-center" onclick="this.classList.toggle('cross-wrapper');this.classList.toggle('chevron-wrapper');this.parentElement.classList.toggle('tuck-vnav');">
+            <div class="cancel transition">
+                <div class="line-45 transition"></div>
+                <div class="line-135 transition"></div>
+            </div>
+        </button>
+        <h1 class="title">Coordinata</h1>
+        <div class="top">
+            <div class="option full-width p-1">
+                <button onclick="redir('page_dashboard', true)">Dashboard</button>
+                <button onclick="redir('page_calendar', true)">Calendar</button>
+                <button onclick="redir('page_notifications', true)">Announcements & Notifications</button>
+                <button onclick="redir('page_options', true)">Event Options</button>
+            </div>
+        </div>
+        <div class="bottom">
+
+        </div>
+    </div>
+
     <div class="DEBUG-TOOLS">
     </div>
     <nav class="topbar">
         <button class="round-4 dark font-1 text-c topright-abs enableDEBUG hidden">&nbsp;<span class="underline"></span>&nbsp;</button>
-        <div class="DEBUG round-4 topleft-abs p-1 z100 font-inter hidden">
+        <div class="DEBUG round-4 topleft-abs p-1 ml-3 z100 font-inter hidden">
             <div class="grid">
                 <div class="log-wrapper">
                     <div class="s-caption p-key">LOG MESSAGES</div>
@@ -222,7 +244,7 @@
         </div>
         <!-- <span class="greyed-text glass round-4">v0.1</span> -->
         <div class="p-half back-btn-wrapper flex flex-align-center flex-justify-center flex-column">
-            <a style="color:#5f5de9 !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();"><div class="flex flex-align-center flex-justify-center">
+            <a style="color:#5f5de9 !important" class="glass round-4 p-half back-btn inline bold highlight-text side-hidden" onclick="history.back();sessionStorage.setItem('reloadpageon', location.hash);"><div class="flex flex-align-center flex-justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 </svg> <span class="text-c">Return &nbsp;</span>
@@ -309,14 +331,113 @@
     
     <!-- Dashboard -->
     <div id="page_dashboard" class="container page">
-        <h1 class="text-c p-1 pb-0 m-1 dash-title">Dashboard</h1>
+        <h1 class="p-1 pb-0 m-1 dash-title">Dashboard</h1>
+        <div class="grid collapsable-grid gapped full-width p-1 mt-2">
+            <button onclick="redir('page_calendar', true)" class="card no-border p-1 round-4">Calendar</button>
+            <button onclick="redir('page_notifications', true)" class="card no-border p-1 round-4">Announcements & Notifications</button>
+            <button onclick="redir('page_options', true)" class="card no-border p-1 round-4">Event Options</button>
+        </div>
         <div class="flex-align-center flex flex-justify-center">
             <button onclick="window.logOut();" class="p-1 dark round-4 m-1 inline recte">Log Out of ID</button>
             <button onclick="window.settings();" class="p-1 dark round-4 m-1 inline dark">Settings</button>
         </div>
     </div>
+    <div id="page_calendar" class="container page">
+        <h1 class="p-1 pt-2 pb-0 m-1 dash-title">Calendar</h1>
+
+        <div class="create-event-wrapper relative">
+            <div class="m-1 half-width create-event card no-border flex flex-align-center flex-justify-center">
+                <button class="round-4 createEventTrigger transition plus-wrapper flex flex-align-center flex-justify-center">
+                    <div class="cancel transition full-width full-height">
+                        <div class="line-45 transition"></div>
+                        <div class="line-135 transition"></div>
+                    </div>
+                </button>
+                <h1>Create Event</h1>
+            </div>
+            <div class="transition-all container from-bottom createEventDialog full-width z100 p-4 pop-down fixed card flex flex-align-center flex-justify-center flex-column">
+                        <input type="text" class="round-4 m-1 full-width dark p-1 input-field no-outline eventTitle" placeholder="Event Title">
+                        <input type="text" class="round-4 m-1 full-width dark p-1 input-field no-outline eventDesc" placeholder="Event Description">
+                        <div class=" select-time no-outline flex flex-align-center flex-justify-center flex-column">
+                            <button class="no-border full-width dark round-4 getEvent">Select a time</button>
+                            <div class="full-width flex flex-align-center flex-justify-center mt-1">
+                                <div class="flex flex-align-center full-width flex-justify-center flex-column">
+                                    <div class="s-caption greyed-text text-c">STARTS AT</div>
+                                    <h1 class="text-c p-key sample-time-1">--:--</h1>
+                                </div>
+                                <div class="flex flex-align-center full-width flex-justify-center flex-column">
+                                    <div class="s-caption greyed-text text-c">ENDS AT</div>
+                                    <h1 class="text-c p-key sample-time-2">--:--</h1>
+                                </div>
+                            </div>
+                        </div>
+                    <button type="submit" class="round-4 m-1 p-1 half-width submit-createEvent">Create!</button>
+                    <div class="fake-btn text-c card half-width no-border p-1 cancel-createEvent">Cancel</div>
+                <!-- </div> -->
+            </div>
+        </div>
+
+        <div id="calendar">
+
+        </div>
+    </div>
     </div>
     
+    <div class="time-wrapper container full-width transition-all pop-down">
+        <div class="time from-bottom dark p-4 fixed bottom-popup">
+            <div class="container p-0">
+                <div class="top flex flex-align-center flex-space-between">
+                    <h1 class="title">Select a <span>time</span></h1>
+                </div>
+            </div>
+    
+            <div class="time-picker-container">
+                <div class="dual flex flex-align-center flex-justify-center">
+                    <div class="time-picker-1 flex flex-align-center flex-justify-center">
+                        <div class="hr">
+                            <div class="increase">+</div>
+                            <input class="number-hr text-c full-width"></input>
+                            <div class="decrease">-</div>
+                        </div><div class="colon">:</div><div class="min">
+                            <div class="increase">+</div>
+                            <input class="number-min text-c full-width"></input>
+                            <div class="decrease">-</div>
+                        </div>
+                    </div>
+                    <div class="dash">-</div>
+                    <div class="time-picker-2 flex flex-align-center flex-justify-center">
+                        <div class="hr">
+                            <div class="increase">+</div>
+                            <input class="number-hr text-c full-width"></input>
+                            <div class="decrease">-</div>
+                        </div><div class="colon">:</div><div class="min">
+                            <div class="increase">+</div>
+                            <input class="number-min text-c full-width"></input>
+                            <div class="decrease">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="decision-container p-1 flex flex-align-center flex-justify-center">
+    
+                <!-- Cancel -->
+                <button class="m-1 round-4 block-size recte no-border transition cross-wrapper flex flex-align-center flex-justify-center" onclick="document.querySelector('.time').classList.add('from-bottom');">
+                    <div class="cancel transition full-width full-height">
+                        <div class="line-45 transition"></div>
+                        <div class="line-135 transition"></div>
+                    </div>
+                </button>
+                <!-- Continue -->
+                <button class="getTime m-1 round-4 block-size no-border transition tick-wrapper flex flex-align-center flex-justify-center">
+                    <div class="cancel transition full-width full-height">
+                        <div class="line-45 transition"></div>
+                        <div class="line-135 transition"></div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="page_tandc" class="page container font-inter">
         <!-- <div class="btn-wrapper flex flex-align-center flex-justify-center">
@@ -366,13 +487,13 @@
         </section>
     </div>
 
-    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_signed_out">
+    <div class="page container pt-0 pb-0 pr-0 pl-4 font-inter no-overflow" id="page_signed_out">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
             <h1>Signed Out.</h1>
             <h3>Auto-Reloading Shortly...</h3>
         </div>
     </div>
-    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_404">
+    <div class="page container pt-0 pb-0 pr-0 pl-4 font-inter no-overflow" id="page_404">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
             <div class="main">
 
@@ -382,6 +503,10 @@
                 <button class="dark round-4 p-1 third-width mt-1" onclick="history.back();">Go Back</button>
             </div>
         </div>
+    </div>
+    <div class="screenTooSmall dark full-width no-overflow max-full-viewport-height flex flex-align-center flex-justify-center flex-column">
+        <h1 class="p-1 mb-2 text-c">Your screen is too small for content to desirably fit.</h1>
+        <button class="card no-border p-1" onclick="this.parentElement.remove()">Continue anyway</button>
     </div>
     <div class="page container p-2 font-inter no-overflow" id="page_dbg">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex-column">
@@ -426,7 +551,7 @@
             </div>
         </div>
     </div>
-    <div class="page container pt-0 pb-0 pr-0 font-inter no-overflow" id="page_contact">
+    <div class="page container pt-0 pb-0 pr-0 pl-4 font-inter no-overflow" id="page_contact">
         <div class="flex flex-align-center flex-justify-center full-width max-full-viewport-height flex generic-wrapper">
             <div class="main blend dark blend-off z-2 inline p-1 round-4 m-1">
                 <h1>Contact Us</h1>

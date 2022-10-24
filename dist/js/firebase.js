@@ -189,7 +189,6 @@ export function signOutUser(errorFunc, successFunc) {
             successFunc() || undefined;
 			redir('page_signed_out');
 			setTimeout(() => {
-				redir('page_start');
                 location.reload();
 			}, 4000);
 		})

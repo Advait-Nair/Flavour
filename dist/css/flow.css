@@ -1668,6 +1668,32 @@ button.terrebat-flavum:focus {
   border-bottom-right-radius: 7px;
 }
 
+.option input:hover {
+  background: #333;
+  color: #ddd;
+}
+
+.option input:focus {
+  background: #333;
+  color: #fff;
+  box-shadow: none;
+  z-index: 1;
+  border: 1.2px solid transparent;
+}
+
+.option div:hover {
+  background: #333;
+  color: #ddd;
+}
+
+.option div:focus {
+  background: #0168eb;
+  color: #fff;
+  box-shadow: 0px 0px 0px 3px rgba(46, 175, 255, 0.6);
+  z-index: 1;
+  border: 1.2px solid transparent;
+}
+
 .card {
   border-radius: 7px;
   padding: 1rem;

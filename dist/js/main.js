@@ -8,7 +8,7 @@ import {
 	translateFirebaseError,
 	isSignedUptoEvent,
 } from './firebase.js';
-import { executeFunctionInitiations, modal, QR, sendNotification, sendUINotification } from './UI.js';
+import { Calendar, executeFunctionInitiations, modal, sendNotification, sendUINotification, UI } from './UI.js';
 
 const errpopPrevContent = document.querySelector('.error-pop').innerHTML;
 // const errCaptionPrevContent = document.querySelector('.err-caption').innerHTML;
@@ -191,6 +191,12 @@ document.addEventListener('DOMContentLoaded', e => {
             })
         }, splashWaitTime + 200)
     });
+
+    if (sessionStorage.getItem('reloadpageon')) {
+        setTimeout(() => {
+            redir(sessionStorage.getItem('reloadpageon'));
+        }, 2000);
+    }
 })
 
 // To export and use
@@ -288,14 +294,100 @@ export function pmsg(msg, kind){
 };
 window.msg = msg;
 
+function cancelEventCreationDialog() {
+    const createEventButton = document.querySelector('.createEventTrigger');
+    const dialog = document.querySelector('.createEventDialog');
+
+    dialog.classList.add('from-bottom');
+    createEventButton.classList.toggle('plus-wrapper');
+    createEventButton.classList.toggle('cross-wrapper');
+    createEventButton.classList.toggle('recte');
+}
+
+window.cancelEventCreationDialog = cancelEventCreationDialog;
 function withCredentials (user)
 {
 	document.querySelector('#page_loading').classList.add('opacity-zero');
 	
 	window.uid = user.user.uid;
 
+    const calendar = new Calendar(document.querySelector('#calendar'));
+    calendar.newCalendar(24);
+    calendar.loadEvents();
 
+    const createEventButton = document.querySelector('.createEventTrigger')
+    const createEventForm = document.querySelector('.createEventDialog');
+    let dashlaneIsInUse = false;
+    createEventForm.querySelectorAll('*').forEach(item => {
+        if(item.dataset.dashlanecreated == 'true') {
+            item.remove();
+            dashlaneIsInUse = true;
+        }
+    });
+    window.dashlaneIsInUse = dashlaneIsInUse;
+
+    const dialog = document.querySelector('.createEventDialog');
+    const submitBtn = document.querySelector('.submit-createEvent');
+
+    const ui = new UI();
+    const dateEl = document.querySelector(
+        '.createEventDialog .getEvent'
+    );
+    let timings = null;
+    dateEl.addEventListener('click', () => {
+        ui.askForTime(time => {
+            timings = time;
+            const sample1 = document.querySelector(
+                '.createEventDialog .sample-time-1'
+            );
+            const sample2 = document.querySelector(
+                '.createEventDialog .sample-time-2'
+            );
+            sample1.textContent = calendar.convertFromDecimalToTimeString(time.from);
+            sample2.textContent = calendar.convertFromDecimalToTimeString(
+				time.to
+			);
+        });
+    });
+
+    submitBtn.addEventListener('click', e => {
+        e.preventDefault();
+
+
+        const titleEl = document.querySelector(
+            '.createEventDialog .eventTitle'
+        );
+        const descEl = document.querySelector(
+            '.createEventDialog .eventDesc'
+        );
+        
+        const title = titleEl.value;
+        const desc = descEl.value;
+
+        if(title.trim() == '' || desc.trim() == '' || !timings) {
+            msg('Fill all fields.', 'error');
+            return
+        };
+        cancelEventCreationDialog();
+
+        titleEl.value = ''
+        descEl.value = ''
+        calendar.newEvent({
+            title,
+            desc,
+            start: timings.from,
+            length: timings.to - timings.from,
+        });
+    })
+    createEventButton.addEventListener('click', e => {
+        createEventButton.classList.toggle('plus-wrapper');
+        createEventButton.classList.toggle('cross-wrapper');
+        createEventButton.classList.toggle('recte');
+        dialog.classList.toggle('from-bottom');
+    })
 }
+
+document.querySelector('.cancel-createEvent').addEventListener('click', cancelEventCreationDialog)
 
 
 function usageInfo () {
@@ -333,22 +425,25 @@ function AutoInit(elseCB) {
 				msg('Auto Sign-in failed.', 'error');
 				console.error(err);
                 finishSplash(() => {
-                    redir('page_signin');
+                    
                     if (sessionStorage.getItem('reloadpageon')) {
                         setTimeout(() => {
                             redir(sessionStorage.getItem('reloadpageon'));
                         }, 2000);
+                    } else {
+                        redir('page_signin');
                     }
                 })
 			},
 			userCredentials => {
                 msg('Auto Sign-in successful!', 'success');
                 finishSplash(() => {
-                    redir('page_dashboard')
                     if (sessionStorage.getItem('reloadpageon')) {
                         setTimeout(() => {
                             redir(sessionStorage.getItem('reloadpageon').replace('#', ''));
                         }, 2000);
+                    } else {
+                        redir('page_dashboard')
                     }
                     withCredentials(userCredentials);
                 })

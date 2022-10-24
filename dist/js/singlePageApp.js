@@ -111,8 +111,7 @@ window.onhashchange = () => {
 		if (localStorage.getItem('user')) {
 			redir('page_dashboard');
 		} else {
-			redir('page_start');
-		}
+			redir('page_start');		}
 	}
 	if (hash == '#page_loading' && window.loadingComplete) {
 		redirectDefault();
@@ -123,6 +122,7 @@ window.onhashchange = () => {
 	} else if (hash == '#page_start' && localStorage.getItem('user')) {
 		redir('page_dashboard');
 	} else if (hash == '#page_dashboard' && !localStorage.getItem('user')) {
+		disableVNAV();
 		redir('page_start');
 	} else if (hash == '#page_creation' && localStorage.getItem('user')) {
 		redir('page_dashboard');
@@ -133,10 +133,28 @@ window.onhashchange = () => {
 		document.body.classList.add('black');
 	}
 
-	if (hash != '#page_check_in') {
-	document.body.classList.remove('black');
-		document.body.classList.remove('brick');
+	if (
+		// hash == '#page_start' ||
+		// hash == '#page_signin' ||
+		// hash == '#page_creation' ||
+		// hash == '#page_signed_out' ||
+		// hash == '#page_tandc'
+		!localStorage.getItem('user')
+	) {
+		disableVNAV();
+	} else {
+		enableVNAV();
 	}
+	// if(hash == '#page_tandc' && localStorage.getItem('user')) {
+	// 	enableVNAV();
+	// }
+}
+
+function disableVNAV () {
+	document.querySelector('.popout').classList.add('hidden');
+}
+function enableVNAV () {
+	document.querySelector('.popout').classList.remove('hidden');
 }
 
 listenForScroll();
@@ -244,7 +262,7 @@ function goThroughAllPages(cb) {
 		cb(page);
 	});
 }
-function redir(pageIdRaw) {
+function redir(pageIdRaw, save) {
 	let pageid;
 	let jumpto;
 	// let isIdPartOfPage = false;
@@ -269,6 +287,10 @@ function redir(pageIdRaw) {
 		jump(pageid);
 	} else {
 		jump(jumpto);
+	}
+
+	if(save || location.hash === '#page_dashboard') {
+		sessionStorage.setItem('reloadpageon', location.hash);
 	}
 
 	topbarRedirect.forEach(element => {

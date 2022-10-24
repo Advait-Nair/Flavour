@@ -1477,6 +1477,32 @@ button.terrebat-flavum {
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
     }
+    input {
+        &:hover {
+            background: $dark;
+            color: $white-grey;
+        }
+        &:focus {
+            background: $dark;
+            color: $white;
+            box-shadow: none;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
+    div {
+        &:hover {
+            background: $dark;
+            color: $white-grey;
+        }
+        &:focus {
+            background: $dark-caeruleus + rgb(1, 1, 29);
+            color: $white;
+            box-shadow: 0px 0px 0px 3px $highlight;
+            z-index: 1;
+            border: 1.2px solid transparent;
+        }
+    }
 }
 
 
