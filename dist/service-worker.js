@@ -11,6 +11,9 @@
  limitations under the License.
  */
 
+//  ! This file has been edited to suit the needs of the application.
+// View the original source code at: https://googlechrome.github.io/samples/service-worker/basic/
+
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
@@ -23,10 +26,6 @@ const PRECACHE_URLS = [
 	'./', // Alias for index.html
 	'./manifest.json',
 	'./css/main.css',
-	'./css/flow.css',
-	'./js/firebase.js',
-	'./js/main.js',
-	'./js/singlePageApp.js',
 ];
 
 // The install handler takes care of precaching the resources we always need.
